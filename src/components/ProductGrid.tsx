@@ -1,43 +1,55 @@
-import { useState } from "react";
-import { ArrowRight, Calendar, Clock, BadgeCheck, Phone, Sparkles, X, Maximize2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, Calendar, Clock, BadgeCheck, Phone, Sparkles, X, Maximize2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
 import zoomImage from "@/assets/zoomimagess.png";
+
+interface Workshop {
+  id: string;
+  title: string;
+  type: "series" | "free_workshop" | "paid_workshop";
+  price: number | null;
+  flyer_url: string | null;
+  date_time: string;
+  cpd_points: boolean | null;
+  trainer_name: string | null;
+}
+
+const getStreamLabel = (type: Workshop["type"]) => {
+  switch (type) {
+    case "series": return "Professional Certification";
+    case "free_workshop": return "Free Power Talk";
+    case "paid_workshop": return "1-Day Workshop";
+  }
+};
+
+const getPrice = (type: Workshop["type"], price: number | null) => {
+  if (type === "free_workshop") return "FREE";
+  return price ? `PKR ${price.toLocaleString()}` : "FREE";
+};
 
 const ProductGrid = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [workshops, setWorkshops] = useState<Workshop[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const sessions = [
-    {
-      stream: "Free Power Talk",
-      title: "Business Growth Fundamentals",
-      date: "Saturday, Jan 15",
-      time: "06:15 PM",
-      price: "FREE",
-      // Using solid colors/gradients as placeholders for flyers
-      image: "bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900",
-      cpd: null,
-      highlight: true,
-    },
-    {
-      stream: "1-Day Workshop",
-      title: "Sales Performance & KPIs",
-      date: "Saturday, Dec 06",
-      time: "10:00 AM",
-      price: "PKR 1,200",
-      image: "bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900",
-      cpd: "0.5 CPD Points",
-      highlight: false,
-    },
-    {
-      stream: "Professional Certification",
-      title: "Employability & Soft Skills",
-      date: "Starts May 03",
-      time: "Weekend Track",
-      price: "PKR 12,800",
-      image: "bg-gradient-to-br from-amber-900 via-yellow-800 to-orange-900",
-      cpd: "Certification",
-      highlight: false,
-    },
-  ];
+  useEffect(() => {
+    const fetchWorkshops = async () => {
+      const { data, error } = await supabase
+        .from("workshops")
+        .select("id, title, type, price, flyer_url, date_time, cpd_points, trainer_name")
+        .eq("is_active", true)
+        .gte("date_time", new Date().toISOString())
+        .order("date_time", { ascending: true });
+
+      if (!error && data) {
+        setWorkshops(data);
+      }
+      setLoading(false);
+    };
+
+    fetchWorkshops();
+  }, []);
 
   return (
     <section id="programs" className="py-24 bg-gradient-to-b from-white via-slate-50 to-white relative overflow-hidden">
@@ -101,113 +113,137 @@ const ProductGrid = () => {
         </div>
 
         {/* Active Sessions Grid - Optimized Layout */}
-        <div className="grid md:grid-cols-3 gap-8 items-start">
-          {sessions.map((session, index) => (
-            <div
-              key={index}
-              className={`flex flex-col bg-white border-2 ${session.highlight ? 'border-accent shadow-xl shadow-accent/20' : 'border-border/50'} hover:border-accent hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-2`}
-            >
-              {/* Highlight Glow */}
-              {session.highlight && (
-                <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
-              )}
-              
-              {/* The Visual - Portrait Aspect Ratio (4:5) for Instagram Posters */}
-              <div 
-                className={`relative w-full aspect-[4/5] overflow-hidden cursor-pointer group/image`}
-                onClick={() => setSelectedImage(session.image)}
-              >
-                 {/* Image Rendering Logic */}
-                 <div className={`w-full h-full ${session.image} transition-transform duration-700 group-hover/image:scale-110`}>
-                    {/* Placeholder content if using bg class */}
-                    {session.image.startsWith('bg-') && (
-                        <>
-                            {/* Animated Grid Pattern */}
-                            <div className="absolute inset-0 opacity-20" style={{
-                              backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                              backgroundSize: '20px 20px'
-                            }} />
-                            
-                            {/* Floating Particles */}
-                            <div className="absolute top-4 right-4 w-2 h-2 bg-white/30 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
-                            <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-accent/50 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-8 h-8 animate-spin text-accent" />
+          </div>
+        ) : workshops.length === 0 ? (
+          <div className="text-center py-16 text-muted-foreground">
+            <p className="text-lg">No upcoming workshops scheduled at the moment.</p>
+            <p className="text-sm mt-2">Check back soon for new training sessions!</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-8 items-start">
+            {workshops.map((workshop, index) => {
+              const isHighlight = index === 0;
+              const streamLabel = getStreamLabel(workshop.type);
+              const priceLabel = getPrice(workshop.type, workshop.price);
+              const dateFormatted = format(new Date(workshop.date_time), "EEEE, MMM dd");
+              const timeFormatted = format(new Date(workshop.date_time), "hh:mm a");
+              const hasFlyer = workshop.flyer_url && !workshop.flyer_url.startsWith('bg-');
+              const whatsappMessage = encodeURIComponent(`Hi, I want to register for ${workshop.title} on ${dateFormatted}.`);
 
-                            <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-5xl uppercase tracking-[0.3em] select-none">
-                              POSTER
-                            </div>
-                        </>
-                    )}
-                 </div>
-
-                {/* Expand Overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-white/10 backdrop-blur-md border border-white/30 p-3 rounded-full transform scale-75 group-hover/image:scale-100 transition-transform duration-300">
-                        <Maximize2 className="w-6 h-6 text-white" />
-                    </div>
-                </div>
-                
-                {/* Authority Badge (Floating) */}
-                {session.cpd && (
-                  <div className="absolute top-4 left-4 bg-accent text-primary px-3 py-1.5 text-xs font-bold uppercase shadow-lg flex items-center gap-1.5 rounded-full pointer-events-none">
-                    <BadgeCheck className="w-3.5 h-3.5" />
-                    {session.cpd}
-                  </div>
-                )}
-                
-                {/* Stream Label */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-16 pointer-events-none">
-                  <span className="text-white text-xs font-bold uppercase tracking-widest bg-accent/90 px-3 py-1 inline-block shadow-sm">
-                    {session.stream}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Content - Flex logic to grow with content */}
-              <div className="p-6 flex flex-col flex-grow relative">
-                {/* Title */}
-                <h3 className="heading-serif text-2xl font-bold text-primary mb-4 leading-tight group-hover:text-accent transition-colors duration-300">
-                  {session.title}
-                </h3>
-
-                {/* Date/Time - Monospace */}
-                <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6 py-3 border-y border-border/30 bg-slate-50/50">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-accent" />
-                    <span>{session.date}</span>
-                  </div>
-                  <div className="w-px h-4 bg-border/50" />
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-accent" />
-                    <span>{session.time}</span>
-                  </div>
-                </div>
-
-                {/* Spacer */}
-                <div className="mt-auto">
-                  {/* Investment */}
-                  <div className="flex items-baseline justify-between mb-6">
-                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Investment</span>
-                    <span className="text-3xl font-serif font-bold text-accent drop-shadow-sm">{session.price}</span>
-                  </div>
-
-                  {/* Action */}
-                  <a
-                    href="https://wa.me/923103336485"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative shadow-lg hover:shadow-accent/20"
+              return (
+                <div
+                  key={workshop.id}
+                  className={`flex flex-col bg-white border-2 ${isHighlight ? 'border-accent shadow-xl shadow-accent/20' : 'border-border/50'} hover:border-accent hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-2`}
+                >
+                  {/* Highlight Glow */}
+                  {isHighlight && (
+                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
+                  )}
+                  
+                  {/* The Visual - Portrait Aspect Ratio (4:5) for Instagram Posters */}
+                  <div 
+                    className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer group/image"
+                    onClick={() => setSelectedImage(workshop.flyer_url || "bg-gradient-to-br from-primary via-primary/90 to-primary/80")}
                   >
-                    <span className="relative z-10 flex items-center gap-2">
-                      <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
-                      Register via WhatsApp
-                      <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                    </span>
-                  </a>
+                    {/* Image Rendering Logic */}
+                    {hasFlyer ? (
+                      <img 
+                        src={workshop.flyer_url!} 
+                        alt={workshop.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary via-primary/90 to-primary/80 transition-transform duration-700 group-hover/image:scale-110">
+                        {/* Animated Grid Pattern */}
+                        <div className="absolute inset-0 opacity-20" style={{
+                          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                          backgroundSize: '20px 20px'
+                        }} />
+                        
+                        {/* Floating Particles */}
+                        <div className="absolute top-4 right-4 w-2 h-2 bg-white/30 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
+                        <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-accent/50 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+
+                        <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-5xl uppercase tracking-[0.3em] select-none">
+                          POSTER
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Expand Overlay */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="bg-white/10 backdrop-blur-md border border-white/30 p-3 rounded-full transform scale-75 group-hover/image:scale-100 transition-transform duration-300">
+                        <Maximize2 className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    
+                    {/* Authority Badge (Floating) */}
+                    {workshop.cpd_points && (
+                      <div className="absolute top-4 left-4 bg-accent text-primary px-3 py-1.5 text-xs font-bold uppercase shadow-lg flex items-center gap-1.5 rounded-full pointer-events-none">
+                        <BadgeCheck className="w-3.5 h-3.5" />
+                        0.5 CPD Points
+                      </div>
+                    )}
+                    
+                    {/* Stream Label */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-16 pointer-events-none">
+                      <span className="text-white text-xs font-bold uppercase tracking-widest bg-accent/90 px-3 py-1 inline-block shadow-sm">
+                        {streamLabel}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Card Content - Flex logic to grow with content */}
+                  <div className="p-6 flex flex-col flex-grow relative">
+                    {/* Title */}
+                    <h3 className="heading-serif text-2xl font-bold text-primary mb-4 leading-tight group-hover:text-accent transition-colors duration-300">
+                      {workshop.title}
+                    </h3>
+
+                    {/* Date/Time - Monospace */}
+                    <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6 py-3 border-y border-border/30 bg-slate-50/50">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4 text-accent" />
+                        <span>{dateFormatted}</span>
+                      </div>
+                      <div className="w-px h-4 bg-border/50" />
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-accent" />
+                        <span>{timeFormatted}</span>
+                      </div>
+                    </div>
+
+                    {/* Spacer */}
+                    <div className="mt-auto">
+                      {/* Investment */}
+                      <div className="flex items-baseline justify-between mb-6">
+                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Investment</span>
+                        <span className="text-3xl font-serif font-bold text-accent drop-shadow-sm">{priceLabel}</span>
+                      </div>
+
+                      {/* Action */}
+                      <a
+                        href={`https://wa.me/923103336485?text=${whatsappMessage}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative shadow-lg hover:shadow-accent/20"
+                      >
+                        <span className="relative z-10 flex items-center gap-2">
+                          <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
+                          Register via WhatsApp
+                          <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Zoom Infrastructure */}
         <div className="mt-20 pt-10 border-t border-border/40">
