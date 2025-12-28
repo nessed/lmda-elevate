@@ -1,7 +1,10 @@
-import { ArrowRight, Calendar, Clock, BadgeCheck, Phone, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Calendar, Clock, BadgeCheck, Phone, Sparkles, X, Maximize2 } from "lucide-react";
 import zoomImage from "@/assets/zoomimagess.png";
 
 const ProductGrid = () => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const sessions = [
     {
       stream: "Free Power Talk",
@@ -9,6 +12,7 @@ const ProductGrid = () => {
       date: "Saturday, Jan 15",
       time: "06:15 PM",
       price: "FREE",
+      // Using solid colors/gradients as placeholders for flyers
       image: "bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900",
       cpd: null,
       highlight: true,
@@ -37,6 +41,39 @@ const ProductGrid = () => {
 
   return (
     <section id="programs" className="py-24 bg-gradient-to-b from-white via-slate-50 to-white relative overflow-hidden">
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button 
+            className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors p-2"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X className="w-8 h-8" />
+          </button>
+          
+          <div 
+            className="relative max-w-2xl w-full max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* If it's a class string (placeholder), render div. If real image, render img */}
+            {selectedImage.startsWith('bg-') ? (
+              <div className={`w-full aspect-[4/5] ${selectedImage} rounded-lg shadow-2xl flex items-center justify-center`}>
+                 <span className="text-white/20 font-bold text-6xl uppercase tracking-widest">POSTER</span>
+              </div>
+            ) : (
+              <img 
+                src={selectedImage} 
+                alt="Workshop Flyer" 
+                className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              />
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Animated Background Elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
@@ -63,8 +100,8 @@ const ProductGrid = () => {
           </p>
         </div>
 
-        {/* Active Sessions Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Active Sessions Grid - Optimized Layout */}
+        <div className="grid md:grid-cols-3 gap-8 items-start">
           {sessions.map((session, index) => (
             <div
               key={index}
@@ -75,40 +112,57 @@ const ProductGrid = () => {
                 <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
               )}
               
-              {/* The Visual */}
-              <div className={`h-56 ${session.image} relative overflow-hidden`}>
-                {/* Animated Grid Pattern */}
-                <div className="absolute inset-0 opacity-20" style={{
-                  backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                  backgroundSize: '20px 20px'
-                }} />
-                
-                {/* Floating Particles */}
-                <div className="absolute top-4 right-4 w-2 h-2 bg-white/30 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
-                <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-accent/50 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
-                
-                {/* Placeholder Text */}
-                <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-5xl uppercase tracking-[0.3em] select-none">
-                  LIVE
+              {/* The Visual - Portrait Aspect Ratio (4:5) for Instagram Posters */}
+              <div 
+                className={`relative w-full aspect-[4/5] overflow-hidden cursor-pointer group/image`}
+                onClick={() => setSelectedImage(session.image)}
+              >
+                 {/* Image Rendering Logic */}
+                 <div className={`w-full h-full ${session.image} transition-transform duration-700 group-hover/image:scale-110`}>
+                    {/* Placeholder content if using bg class */}
+                    {session.image.startsWith('bg-') && (
+                        <>
+                            {/* Animated Grid Pattern */}
+                            <div className="absolute inset-0 opacity-20" style={{
+                              backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                              backgroundSize: '20px 20px'
+                            }} />
+                            
+                            {/* Floating Particles */}
+                            <div className="absolute top-4 right-4 w-2 h-2 bg-white/30 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
+                            <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-accent/50 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+
+                            <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-5xl uppercase tracking-[0.3em] select-none">
+                              POSTER
+                            </div>
+                        </>
+                    )}
+                 </div>
+
+                {/* Expand Overlay */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-white/10 backdrop-blur-md border border-white/30 p-3 rounded-full transform scale-75 group-hover/image:scale-100 transition-transform duration-300">
+                        <Maximize2 className="w-6 h-6 text-white" />
+                    </div>
                 </div>
                 
                 {/* Authority Badge (Floating) */}
                 {session.cpd && (
-                  <div className="absolute top-4 left-4 bg-accent text-primary px-3 py-1.5 text-xs font-bold uppercase shadow-lg flex items-center gap-1.5 rounded-full transform hover:scale-105 transition-transform">
+                  <div className="absolute top-4 left-4 bg-accent text-primary px-3 py-1.5 text-xs font-bold uppercase shadow-lg flex items-center gap-1.5 rounded-full pointer-events-none">
                     <BadgeCheck className="w-3.5 h-3.5" />
                     {session.cpd}
                   </div>
                 )}
                 
                 {/* Stream Label */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-16">
-                  <span className="text-white text-xs font-bold uppercase tracking-widest bg-accent/90 px-3 py-1 inline-block">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-16 pointer-events-none">
+                  <span className="text-white text-xs font-bold uppercase tracking-widest bg-accent/90 px-3 py-1 inline-block shadow-sm">
                     {session.stream}
                   </span>
                 </div>
               </div>
 
-              {/* Card Content */}
+              {/* Card Content - Flex logic to grow with content */}
               <div className="p-6 flex flex-col flex-grow relative">
                 {/* Title */}
                 <h3 className="heading-serif text-2xl font-bold text-primary mb-4 leading-tight group-hover:text-accent transition-colors duration-300">
@@ -141,7 +195,7 @@ const ProductGrid = () => {
                     href="https://wa.me/923103336485"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative"
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative shadow-lg hover:shadow-accent/20"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />

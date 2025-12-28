@@ -1,5 +1,5 @@
 import { ArrowRight, Award, Sparkles, Zap } from "lucide-react";
-import heroImage from "@/assets/lmda/1766914035711_alisajid.jpg";
+import heroImage from "@/assets/cover.png";
 
 const Hero = () => {
   return (
@@ -8,22 +8,26 @@ const Hero = () => {
       <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
       <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
       
-      {/* Background Image with Dark Overlay */}
-      <div className="absolute inset-0 -z-10">
-        <img
-          src={heroImage}
-          alt="Prof. Dr. Ali Sajid delivering workshop"
-          className="w-full h-full object-cover opacity-40 scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-primary/50" />
+      {/* Background - Soft Split Layout */}
+      <div className="absolute inset-0 bg-primary">
+          {/* Right-aligned Image Container for Desktop, Full Height/Width for Mobile */}
+          <div className="absolute right-0 top-0 h-full w-full lg:w-[65%] transition-all duration-700">
+            <img
+              src={heroImage}
+              alt="Prof. Dr. Ali Sajid"
+              className="w-full h-full object-cover object-[75%_center] sm:object-center lg:object-[center_20%] opacity-50 sm:opacity-60 mix-blend-overlay lg:mix-blend-normal hover:scale-105 transition-transform duration-1000"
+            />
+            {/* Gradient Masks */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary/20 lg:via-primary/80 lg:to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent" />
+          </div>
+          
+          {/* Animated Grid Overlay - Full Width */}
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
+          }} />
       </div>
-      
-      {/* Animated Grid Pattern */}
-      <div className="absolute inset-0 opacity-5" style={{
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-        backgroundSize: '60px 60px'
-      }} />
 
       <div className="container-wide py-32 relative z-10">
         <div className="max-w-4xl">
