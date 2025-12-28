@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import content from "@/data/content";
-import lmdaLogoColor from "@/assets/lmda-logo.png";
-import lmdaLogoWhite from "@/assets/lmda-logo-white.png";
+import lmdaLogo from "@/assets/lmda-logo.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +28,7 @@ const Header = () => {
           {/* Logo */}
           <a href="#home" className="flex items-center">
             <img
-              src={isScrolled ? lmdaLogoColor : lmdaLogoWhite}
+              src={lmdaLogo}
               alt="LMDA"
               className="h-10 md:h-12 w-auto transition-all"
             />

@@ -1,6 +1,6 @@
 import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
 import content from "@/data/content";
-import lmdaLogo from "@/assets/lmda-logo-white.png";
+import lmdaLogo from "@/assets/lmda-logo.png";
 
 const Footer = () => {
   return (

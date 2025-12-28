@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import content from "@/data/content";
 
-// Import event photo for background
-import eventBg from "@/assets/lmda/1766913795323_leadership camp.png";
+// Import hero photo for background
+import heroBg from "@/assets/hero.jpg";
 
 const Hero = () => {
   return (
@@ -10,7 +10,7 @@ const Hero = () => {
       {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 -z-10">
         <img
-          src={eventBg}
+          src={heroBg}
           alt="LMDA Leadership Training"
           className="w-full h-full object-cover opacity-40"
         />
