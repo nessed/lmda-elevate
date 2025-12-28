@@ -36,28 +36,29 @@ const ProductGrid = () => {
   ];
 
   return (
-    <section id="programs" className="py-24 bg-gradient-to-b from-slate-900 via-primary to-slate-900 relative overflow-hidden">
+    <section id="programs" className="py-24 bg-gradient-to-b from-white via-slate-50 to-white relative overflow-hidden">
       {/* Animated Background Elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
       
       <div className="container-wide relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto mb-16 px-6 py-14 bg-gradient-to-r from-accent via-accent to-yellow-500 relative overflow-hidden shadow-2xl shadow-accent/30">
-          {/* Decorative Lines */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-white/20" />
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-primary/30" />
+        <div className="text-center max-w-4xl mx-auto mb-16 px-6 py-14 bg-gradient-to-r from-primary via-primary to-primary/95 relative overflow-hidden shadow-2xl group">
+          {/* Animated Accent Lines */}
+          <div className="absolute top-0 left-0 w-2 h-full bg-accent" />
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
+          <div className="absolute right-0 top-0 w-64 h-full bg-gradient-to-l from-accent/10 to-transparent transform skew-x-12 group-hover:translate-x-4 transition-transform duration-700" />
           
           {/* Floating Badge */}
-          <div className="inline-flex items-center gap-2 py-1.5 px-4 bg-primary/90 rounded-full text-white text-xs font-mono mb-6 tracking-wider uppercase shadow-xl">
-            <Sparkles className="w-3 h-3 text-accent" />
-            Limited Seats Available
+          <div className="inline-flex items-center gap-2 py-1.5 px-4 border border-accent/40 rounded-full text-accent text-xs font-mono mb-6 tracking-wider uppercase bg-primary/50 backdrop-blur-sm animate-bounce" style={{ animationDuration: '3s' }}>
+            <Sparkles className="w-3 h-3" />
+            Start Your Journey
           </div>
           
-          <h2 className="heading-serif text-4xl md:text-5xl text-primary mb-4 font-black relative z-10">
+          <h2 className="heading-serif text-4xl md:text-5xl text-white mb-4 font-bold relative z-10">
             Upcoming Training Sessions
           </h2>
-          <p className="text-lg text-primary/80 font-bold max-w-2xl mx-auto relative z-10">
+          <p className="text-lg text-white/80 font-medium max-w-2xl mx-auto relative z-10">
             Select your track. Secure your seat. Scale your skills.
           </p>
         </div>
@@ -67,72 +68,72 @@ const ProductGrid = () => {
           {sessions.map((session, index) => (
             <div
               key={index}
-              className="flex flex-col bg-white border-4 border-accent shadow-2xl shadow-accent/20 hover:shadow-accent/40 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-3"
+              className={`flex flex-col bg-white border-2 ${session.highlight ? 'border-accent shadow-xl shadow-accent/20' : 'border-border/50'} hover:border-accent hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-2`}
             >
-              {/* Gold Top Bar */}
-              <div className="h-2 bg-gradient-to-r from-accent via-yellow-400 to-accent" />
+              {/* Highlight Glow */}
+              {session.highlight && (
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
+              )}
               
               {/* The Visual */}
               <div className={`h-56 ${session.image} relative overflow-hidden`}>
-                {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-                
                 {/* Animated Grid Pattern */}
-                <div className="absolute inset-0 opacity-10" style={{
-                  backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
                   backgroundSize: '20px 20px'
                 }} />
                 
+                {/* Floating Particles */}
+                <div className="absolute top-4 right-4 w-2 h-2 bg-white/30 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
+                <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-accent/50 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+                
                 {/* Placeholder Text */}
-                <div className="absolute inset-0 flex items-center justify-center text-white/20 font-black text-6xl uppercase tracking-[0.3em] select-none">
+                <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-5xl uppercase tracking-[0.3em] select-none">
                   LIVE
                 </div>
                 
                 {/* Authority Badge (Floating) */}
                 {session.cpd && (
-                  <div className="absolute top-4 left-4 bg-accent text-primary px-4 py-2 text-xs font-black uppercase shadow-xl flex items-center gap-2 border-2 border-primary/20">
-                    <BadgeCheck className="w-4 h-4" />
+                  <div className="absolute top-4 left-4 bg-accent text-primary px-3 py-1.5 text-xs font-bold uppercase shadow-lg flex items-center gap-1.5 rounded-full transform hover:scale-105 transition-transform">
+                    <BadgeCheck className="w-3.5 h-3.5" />
                     {session.cpd}
                   </div>
                 )}
                 
                 {/* Stream Label */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span className="text-white text-xs font-black uppercase tracking-[0.2em] bg-primary px-4 py-2 inline-block border-l-4 border-accent">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-16">
+                  <span className="text-white text-xs font-bold uppercase tracking-widest bg-accent/90 px-3 py-1 inline-block">
                     {session.stream}
                   </span>
                 </div>
               </div>
 
               {/* Card Content */}
-              <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-white to-slate-50 relative">
-                {/* Decorative Corner */}
-                <div className="absolute top-0 right-0 w-20 h-20 bg-accent/10" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
-                
+              <div className="p-6 flex flex-col flex-grow relative">
                 {/* Title */}
-                <h3 className="heading-serif text-2xl font-black text-primary mb-4 leading-tight">
+                <h3 className="heading-serif text-2xl font-bold text-primary mb-4 leading-tight group-hover:text-accent transition-colors duration-300">
                   {session.title}
                 </h3>
 
                 {/* Date/Time - Monospace */}
-                <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6 py-4 px-4 border-2 border-border bg-slate-100/80">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6 py-3 border-y border-border/30 bg-slate-50/50">
+                  <div className="flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-accent" />
-                    <span className="font-bold">{session.date}</span>
+                    <span>{session.date}</span>
                   </div>
-                  <div className="w-px h-5 bg-border" />
-                  <div className="flex items-center gap-2">
+                  <div className="w-px h-4 bg-border/50" />
+                  <div className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4 text-accent" />
-                    <span className="font-bold">{session.time}</span>
+                    <span>{session.time}</span>
                   </div>
                 </div>
 
                 {/* Spacer */}
                 <div className="mt-auto">
-                  {/* Investment - HEAVY VISUAL WEIGHT */}
-                  <div className="mb-6 p-4 bg-primary border-l-4 border-accent">
-                    <span className="text-xs font-bold text-white/70 uppercase tracking-[0.2em] block mb-1">Investment</span>
-                    <span className="text-4xl md:text-5xl font-black text-accent drop-shadow-lg tracking-tight">{session.price}</span>
+                  {/* Investment */}
+                  <div className="flex items-baseline justify-between mb-6">
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Investment</span>
+                    <span className="text-3xl font-serif font-bold text-accent drop-shadow-sm">{session.price}</span>
                   </div>
 
                   {/* Action */}
@@ -140,11 +141,13 @@ const ProductGrid = () => {
                     href="https://wa.me/923103336485"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3 w-full py-5 bg-accent text-primary font-black hover:bg-primary hover:text-accent transition-all duration-300 uppercase tracking-wider text-base group/btn border-2 border-transparent hover:border-accent"
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative"
                   >
-                    <Phone className="w-5 h-5 group-hover/btn:animate-bounce" />
-                    Register via WhatsApp
-                    <ArrowRight className="w-5 h-5 transform group-hover/btn:translate-x-2 transition-transform" />
+                    <span className="relative z-10 flex items-center gap-2">
+                      <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
+                      Register via WhatsApp
+                      <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                    </span>
                   </a>
                 </div>
               </div>
@@ -153,11 +156,11 @@ const ProductGrid = () => {
         </div>
 
         {/* Zoom Infrastructure */}
-        <div className="mt-20 pt-10 border-t border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-            <img src={zoomImage} alt="Zoom" className="h-12 w-auto brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300" />
-            <p className="text-sm text-white/70 font-medium text-center md:text-left">
-              <span className="text-accent font-bold">Seamless Digital Delivery.</span> All sessions hosted on Zoom Pro HD with 24/7 cloud recording access.
+        <div className="mt-20 pt-10 border-t border-border/40">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 opacity-80 hover:opacity-100 transition-opacity duration-300">
+            <img src={zoomImage} alt="Zoom" className="h-10 w-auto grayscale hover:grayscale-0 transition-all duration-300" />
+            <p className="text-sm text-muted-foreground font-medium text-center md:text-left">
+              <span className="text-primary font-bold">Seamless Digital Delivery.</span> All sessions hosted on Zoom Pro HD with 24/7 cloud recording access.
             </p>
           </div>
         </div>

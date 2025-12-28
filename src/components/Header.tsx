@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import content from "@/data/content";
 import lmdaLogo from "@/assets/lmda-logo.png";
@@ -26,7 +27,7 @@ const Header = () => {
       <div className="container-wide">
         <nav className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#home" className="flex items-center group">
+          <Link to="/" className="flex items-center group">
             <img
               src={lmdaLogo}
               alt="LMDA"
@@ -34,7 +35,7 @@ const Header = () => {
                 isScrolled ? "h-10" : "h-12 md:h-14"
               }`}
             />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-10">
@@ -54,8 +55,8 @@ const Header = () => {
                 }`} />
               </a>
             ))}
-            <a
-              href="/consultancy"
+            <Link
+              to="/consultancy"
               className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group py-2 ${
                 isScrolled
                   ? "text-gray-700 hover:text-lmda-blue"
@@ -66,7 +67,7 @@ const Header = () => {
               <span className={`absolute bottom-0 left-0 w-0 h-[2px] transition-all duration-300 ease-out group-hover:w-full opacity-80 ${
                 isScrolled ? "bg-lmda-blue" : "bg-white"
               }`} />
-            </a>
+            </Link>
           </div>
 
           {/* CTA */}
@@ -111,6 +112,13 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-xl lg:hidden animate-fade-up origin-top">
             <div className="flex flex-col p-6 space-y-4">
+              <Link
+                to="/"
+                className="text-lg font-medium text-gray-800 hover:text-lmda-blue transition-colors px-4 py-2 hover:bg-gray-50/50 rounded-sm"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
               {content.navigation.map((item) => (
                 <a
                   key={item.label}
@@ -121,13 +129,20 @@ const Header = () => {
                   {item.label}
                 </a>
               ))}
+              <Link
+                to="/consultancy"
+                className="text-lg font-medium text-gray-800 hover:text-lmda-blue transition-colors px-4 py-2 hover:bg-gray-50/50 rounded-sm"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Consultancy
+              </Link>
               <div className="pt-6 mt-4 border-t border-gray-100">
                 <a
                   href="#contact"
                   className="block w-full text-center px-6 py-3 text-base font-semibold text-white bg-lmda-blue hover:bg-lmda-blue/90 shadow-md transition-all rounded-none"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Request Consultation
+                  Enquire for Group Training
                 </a>
               </div>
             </div>
