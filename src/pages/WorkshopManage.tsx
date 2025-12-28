@@ -188,11 +188,6 @@ const WorkshopManage = () => {
                     <h3 className="text-primary-foreground font-medium truncate">
                       {workshop.title}
                     </h3>
-                    {isPast(workshop.date_time) && (
-                      <span className="px-2 py-0.5 text-xs bg-muted text-muted-foreground">
-                        Past Date
-                      </span>
-                    )}
                   </div>
                   <div className="flex items-center gap-3 text-sm text-primary-foreground/60">
                     <span>{format(new Date(workshop.date_time), 'MMM d, yyyy h:mm a')}</span>
@@ -200,12 +195,12 @@ const WorkshopManage = () => {
                       {getTypeLabel(workshop.type)}
                     </span>
                     <span className={`px-2 py-0.5 text-xs rounded-sm ${
-                      workshop.status === 'completed' ? 'bg-slate-700 text-slate-200' :
+                      isPast(workshop.date_time) || workshop.status === 'completed' ? 'bg-slate-700 text-slate-200' :
                       workshop.status === 'selling_fast' ? 'bg-orange-900/50 text-orange-200' :
                       workshop.status === 'fully_booked' ? 'bg-red-900/50 text-red-200' :
                       'bg-green-900/30 text-green-200'
                     }`}>
-                      {getStatusLabel(workshop.status)}
+                      {isPast(workshop.date_time) ? 'Completed' : getStatusLabel(workshop.status)}
                     </span>
                     {workshop.price > 0 && (
                       <span>PKR {workshop.price.toLocaleString()}</span>

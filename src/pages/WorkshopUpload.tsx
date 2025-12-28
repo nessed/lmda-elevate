@@ -203,11 +203,11 @@ const WorkshopUpload = () => {
     }
 
       navigate('/admin/workshops');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error saving workshop:', err);
       toast({
         title: 'Error',
-        description: 'Failed to save workshop. Please try again.',
+        description: err.message || 'Failed to save workshop. Please try again.',
         variant: 'destructive',
       });
     } finally {

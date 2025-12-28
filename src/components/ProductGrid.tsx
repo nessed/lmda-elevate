@@ -29,31 +29,6 @@ const getPrice = (type: Workshop["type"], price: number | null) => {
   return price ? `PKR ${price.toLocaleString()}` : "FREE";
 };
 
-const getStatusBadge = (status: Workshop["status"]) => {
-  switch (status) {
-    case "selling_fast":
-      return (
-        <span className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1.5 text-xs font-bold uppercase shadow-lg rounded-full animate-pulse">
-          Selling Fast 🔥
-        </span>
-      );
-    case "fully_booked":
-      return (
-        <span className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1.5 text-xs font-bold uppercase shadow-lg rounded-full">
-          Fully Booked
-        </span>
-      );
-    case "completed":
-      return (
-        <span className="absolute top-4 right-4 bg-slate-600 text-white px-3 py-1.5 text-xs font-bold uppercase shadow-lg rounded-full">
-          Completed
-        </span>
-      );
-    default:
-      return null;
-  }
-};
-
 const ProductGrid = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
@@ -65,7 +40,7 @@ const ProductGrid = () => {
         .from("workshops")
         .select("id, title, type, status, price, flyer_url, date_time, cpd_points, trainer_name")
         .eq("is_active", true)
-        // Removed .gte("date_time", new Date().toISOString()) to allow manual status control
+        .gte("date_time", new Date().toISOString())
         .order("date_time", { ascending: true });
 
       if (!error && data) {
@@ -178,8 +153,6 @@ const ProductGrid = () => {
                     className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer group/image"
                     onClick={() => setSelectedImage(workshop.flyer_url || "bg-gradient-to-br from-primary via-primary/90 to-primary/80")}
                   >
-                    {/* Status Badge (Selling Fast, Completed, etc) */}
-                    {getStatusBadge(workshop.status)}
 
                     {/* Image Rendering Logic */}
                     {hasFlyer ? (
