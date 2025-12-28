@@ -2,11 +2,10 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
-import Process from "@/components/Process";
 import Trainers from "@/components/Trainers";
+import Process from "@/components/Process";
 import Achievements from "@/components/Achievements";
 import Footer from "@/components/Footer";
-import content from "@/data/content.json";
 
 const Index = () => {
   return (
@@ -15,16 +14,16 @@ const Index = () => {
         <title>LMDA - Leadership and Management Development Associates | Lahore</title>
         <meta
           name="description"
-          content="LMDA is an elite management training and consulting firm specializing in Total Quality Management, Leadership Development, and Business Strategy. World-class customized in-house training at your doorstep."
+          content="20+ years of transforming corporate culture through strategic TQM & Leadership. Led by Prof. Ali Sajid (PhD USA, T.I.), LMDA delivers world-class in-house training."
         />
         <meta
           name="keywords"
-          content="LMDA, management training, leadership development, corporate training, TQM, Lahore, Pakistan, consulting"
+          content="LMDA, management training, leadership development, corporate training, TQM, Lahore, Pakistan, consulting, Prof Ali Sajid"
         />
-        <meta property="og:title" content="LMDA - Making Business More Effective" />
+        <meta property="og:title" content="LMDA - Transforming Corporate Culture Through Strategic Leadership" />
         <meta
           property="og:description"
-          content="Elite management training and consulting firm with fully integrated capabilities in Total Quality Management, Business Strategy, and Strategic Planning."
+          content="20+ years of expertise in Total Quality Management, Business Strategy, and Leadership Development."
         />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://lmda.pk" />
@@ -35,8 +34,8 @@ const Index = () => {
         <main>
           <Hero />
           <TrustBar />
-          <Process />
           <Trainers />
+          <Process />
           <Achievements />
         </main>
         <Footer />

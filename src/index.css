@@ -1,115 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* LMDA Design System - Big Four Consultancy Aesthetic */
+/* LMDA Design System - Big Four Authority Style */
 
 @layer base {
   :root {
-    /* Core Brand Colors */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 11%;
+    /* Midnight Navy & Executive Gold Palette */
+    --background: 220 20% 98%;
+    --foreground: 220 40% 13%;
     
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 11%;
+    --card-foreground: 220 40% 13%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 11%;
+    --popover-foreground: 220 40% 13%;
     
-    /* Corporate Blue - Primary Action */
-    --primary: 220 54% 47%;
+    /* Midnight Navy - Primary */
+    --primary: 220 40% 13%;
     --primary-foreground: 0 0% 100%;
     
     /* Subtle backgrounds */
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 0 0% 11%;
+    --secondary: 220 20% 96%;
+    --secondary-foreground: 220 40% 13%;
     
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 15% 40%;
     
-    /* LMDA Yellow - Accent/Highlight */
-    --accent: 42 90% 55%;
-    --accent-foreground: 0 0% 11%;
+    /* Executive Gold - Accent */
+    --accent: 42 78% 55%;
+    --accent-foreground: 220 40% 13%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Cloud Grey borders */
-    --border: 220 13% 81%;
-    --input: 220 13% 81%;
-    --ring: 220 54% 47%;
+    --border: 220 20% 88%;
+    --input: 220 20% 88%;
+    --ring: 42 78% 55%;
     
-    --radius: 0.5rem;
+    --radius: 0.25rem;
     
     /* Custom LMDA tokens */
-    --lmda-charcoal: 0 0% 11%;
-    --lmda-blue: 220 54% 47%;
-    --lmda-yellow: 42 90% 55%;
-    --lmda-grey: 220 4% 68%;
-    --lmda-light-grey: 220 14% 96%;
+    --lmda-navy: 220 40% 13%;
+    --lmda-gold: 42 78% 55%;
+    --lmda-grey: 220 15% 55%;
+    --lmda-light: 220 20% 98%;
     
     /* Typography */
+    --font-serif: 'Playfair Display', Georgia, serif;
     --font-sans: 'Inter', system-ui, sans-serif;
     
-    /* Shadows */
-    --shadow-subtle: 0 1px 3px 0 hsl(220 13% 81% / 0.3);
-    --shadow-card: 0 4px 20px -4px hsl(220 13% 81% / 0.4);
-    --shadow-lift: 0 8px 30px -8px hsl(220 54% 47% / 0.15);
-    
-    /* Transitions */
-    --transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Shadows - Subtle and professional */
+    --shadow-subtle: 0 1px 2px 0 hsl(220 40% 13% / 0.05);
+    --shadow-card: 0 4px 16px -4px hsl(220 40% 13% / 0.1);
+    --shadow-lift: 0 8px 24px -8px hsl(220 40% 13% / 0.15);
 
     /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 220 9% 46%;
-    --sidebar-primary: 220 54% 47%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 0 0% 11%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 220 54% 47%;
+    --sidebar-background: 220 40% 13%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 42 78% 55%;
+    --sidebar-primary-foreground: 220 40% 13%;
+    --sidebar-accent: 220 35% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 220 35% 20%;
+    --sidebar-ring: 42 78% 55%;
   }
 
   .dark {
-    --background: 0 0% 7%;
+    --background: 220 40% 8%;
     --foreground: 0 0% 95%;
     
-    --card: 0 0% 10%;
+    --card: 220 40% 10%;
     --card-foreground: 0 0% 95%;
     
-    --popover: 0 0% 10%;
+    --popover: 220 40% 10%;
     --popover-foreground: 0 0% 95%;
     
-    --primary: 220 54% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 42 78% 55%;
+    --primary-foreground: 220 40% 13%;
     
-    --secondary: 220 14% 15%;
+    --secondary: 220 35% 15%;
     --secondary-foreground: 0 0% 95%;
     
-    --muted: 220 14% 15%;
-    --muted-foreground: 220 9% 60%;
+    --muted: 220 35% 15%;
+    --muted-foreground: 220 15% 60%;
     
-    --accent: 42 90% 55%;
-    --accent-foreground: 0 0% 11%;
+    --accent: 42 78% 55%;
+    --accent-foreground: 220 40% 13%;
     
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 95%;
     
-    --border: 220 14% 20%;
-    --input: 220 14% 20%;
-    --ring: 220 54% 55%;
-
-    --sidebar-background: 0 0% 7%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 220 54% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 220 14% 20%;
-    --sidebar-ring: 220 54% 55%;
+    --border: 220 35% 20%;
+    --input: 220 35% 20%;
+    --ring: 42 78% 55%;
   }
 }
 
@@ -123,44 +109,57 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    @apply font-semibold tracking-tight text-foreground;
+  }
+
+  h4, h5, h6 {
     @apply font-semibold tracking-tight text-foreground;
   }
 }
 
 @layer components {
-  /* Hero Button Variants */
-  .btn-hero {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold rounded-lg transition-all duration-300;
-    @apply bg-primary text-primary-foreground;
-    @apply hover:shadow-lg hover:-translate-y-0.5;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  /* Authority Button - Sharp, professional */
+  .btn-authority {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold transition-all duration-200;
+    @apply bg-primary text-primary-foreground border-2 border-primary;
+    @apply hover:bg-transparent hover:text-primary;
+    border-radius: 0;
   }
 
-  .btn-hero-outline {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold rounded-lg transition-all duration-300;
-    @apply bg-transparent border-2 border-border text-foreground;
-    @apply hover:border-primary hover:text-primary hover:-translate-y-0.5;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  .btn-authority-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold transition-all duration-200;
+    @apply bg-transparent border-2 border-foreground text-foreground;
+    @apply hover:bg-foreground hover:text-background;
+    border-radius: 0;
   }
 
-  /* Card with lift effect */
-  .card-lift {
-    @apply bg-card rounded-lg border border-border transition-all duration-300;
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold transition-all duration-200;
+    @apply bg-accent text-accent-foreground border-2 border-accent;
+    @apply hover:bg-transparent hover:text-accent hover:border-accent;
+    border-radius: 0;
+  }
+
+  /* Card with sharp edges */
+  .card-authority {
+    @apply bg-card border border-border transition-all duration-200;
+    border-radius: 0;
     box-shadow: var(--shadow-card);
   }
 
-  .card-lift:hover {
+  .card-authority:hover {
     box-shadow: var(--shadow-lift);
-    transform: translateY(-4px);
   }
 
   /* Section spacing */
   .section-padding {
-    @apply py-20 md:py-28 lg:py-32;
+    @apply py-20 md:py-24 lg:py-28;
   }
 
   /* Container max width */
@@ -168,39 +167,33 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Marquee animation */
-  .marquee {
-    animation: marquee 30s linear infinite;
+  /* Gold badge for credentials */
+  .badge-gold {
+    @apply inline-block px-2 py-0.5 text-xs font-semibold uppercase tracking-wider;
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
   }
 
-  .marquee:hover {
-    animation-play-state: paused;
+  /* Serif heading */
+  .heading-serif {
+    font-family: var(--font-serif);
+    @apply font-semibold tracking-tight;
   }
 
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  /* Yellow accent underline */
-  .accent-underline {
+  /* Gold underline */
+  .gold-underline {
     position: relative;
     display: inline-block;
   }
 
-  .accent-underline::after {
+  .gold-underline::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -6px;
     left: 0;
-    width: 100%;
-    height: 4px;
+    width: 60px;
+    height: 3px;
     background-color: hsl(var(--accent));
-    border-radius: 2px;
   }
 
   /* Fade in animation */
@@ -223,7 +216,6 @@
   .fade-in-delay-1 { animation-delay: 0.1s; }
   .fade-in-delay-2 { animation-delay: 0.2s; }
   .fade-in-delay-3 { animation-delay: 0.3s; }
-  .fade-in-delay-4 { animation-delay: 0.4s; }
 }
 
 @layer utilities {

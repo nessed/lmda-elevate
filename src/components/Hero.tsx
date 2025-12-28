@@ -1,99 +1,81 @@
-import { ArrowRight, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import content from "@/data/content.json";
-import heroImage from "@/assets/hero-consulting.jpg";
+import { ArrowRight } from "lucide-react";
+import content from "@/data/content";
+
+// Import event photo for background
+import eventBg from "@/assets/lmda/1766913795323_leadership camp.png";
 
 const Hero = () => {
-  const highlights = [
-    "Total Quality Management",
-    "Strategic Planning",
-    "Leadership Development",
-  ];
-
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-32 lg:pt-24">
-      <div className="container-wide">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
-          <div className="space-y-8 fade-in">
-            <div className="space-y-4">
-              <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-foreground font-medium text-sm rounded-full border border-accent/20">
-                Elite Management Training & Consulting
-              </span>
-              
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
-                {content.company.headline.split(' ').slice(0, 2).join(' ')}{' '}
-                <span className="accent-underline">
-                  {content.company.headline.split(' ').slice(2).join(' ')}
-                </span>
-              </h1>
-              
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                {content.company.subheadline}. Professionalism, ethics and hard work are our core values.
-              </p>
-            </div>
+    <section id="home" className="relative min-h-screen flex items-center bg-primary">
+      {/* Background Image with Dark Overlay */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src={eventBg}
+          alt="LMDA Leadership Training"
+          className="w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
+      </div>
 
-            {/* Highlights */}
-            <div className="space-y-3">
-              {highlights.map((item, index) => (
-                <div
-                  key={item}
-                  className={`flex items-center gap-3 fade-in fade-in-delay-${index + 1}`}
-                >
-                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-foreground font-medium">{item}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-base group"
-              >
-                Work With Us
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-border hover:border-primary hover:text-primary font-semibold px-8 py-6 text-base"
-              >
-                View Our Process
-              </Button>
-            </div>
+      <div className="container-wide py-32">
+        <div className="max-w-3xl">
+          {/* Eyebrow with Gold accent */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-px bg-accent" />
+            <span className="text-sm font-medium text-accent uppercase tracking-widest">
+              Management Consulting & Training
+            </span>
           </div>
 
-          {/* Right Image */}
-          <div className="relative fade-in fade-in-delay-2">
-            <div className="relative rounded-2xl overflow-hidden shadow-lift">
-              <img
-                src={heroImage}
-                alt="LMDA Corporate Training - Executive team in professional meeting"
-                className="w-full h-auto object-cover aspect-[4/3]"
-                loading="eager"
-              />
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/10 to-transparent" />
-            </div>
+          {/* Authority Headline */}
+          <h1 className="heading-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-white mb-6">
+            20+ Years of Transforming Corporate Culture Through Strategic TQM & Leadership
+          </h1>
 
-            {/* Floating stat card */}
-            <div className="absolute -bottom-6 -left-6 bg-card p-6 rounded-xl shadow-card border border-border hidden md:block">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">1000+</div>
-                <div className="text-sm text-muted-foreground">Professionals Trained</div>
+          {/* Subheadline */}
+          <p className="text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed mb-10">
+            Led by Prof. Ali Sajid (PhD USA, T.I.), LMDA delivers world-class in-house training that drives measurable organizational transformation.
+          </p>
+
+          {/* CTA Buttons - Sharp, professional */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a
+              href="#contact"
+              className="btn-gold"
+            >
+              Schedule a Senior Consultant Discovery Call
+              <ArrowRight className="w-5 h-5" />
+            </a>
+            <a
+              href="#trainers"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold border-2 border-background/30 text-background hover:bg-background hover:text-foreground transition-all"
+              style={{ borderRadius: 0 }}
+            >
+              Meet Our Experts
+            </a>
+          </div>
+
+          {/* Authority Markers */}
+          <div className="mt-16 pt-8 border-t border-background/20">
+            <div className="flex flex-wrap items-center gap-8 text-background/60">
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-bold text-accent">1000+</span>
+                <span className="text-sm">Executives Trained</span>
+              </div>
+              <div className="hidden sm:block w-px h-8 bg-background/20" />
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-bold text-accent">20+</span>
+                <span className="text-sm">Years Experience</span>
+              </div>
+              <div className="hidden sm:block w-px h-8 bg-background/20" />
+              <div className="flex items-center gap-2">
+                <span className="text-3xl font-bold text-accent">92%</span>
+                <span className="text-sm">Client Satisfaction</span>
               </div>
             </div>
-
-            {/* Yellow accent decoration */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-2xl" />
           </div>
         </div>
       </div>
-
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-secondary/50 to-transparent -z-10" />
     </section>
   );
 };
