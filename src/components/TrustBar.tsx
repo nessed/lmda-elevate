@@ -1,27 +1,35 @@
-import content from "@/data/content";
+import usaidLogo from "@/assets/lmda/1766913965236_logo-usaid.png";
+import haierLogo from "@/assets/lmda/1766913968918_haier.png";
+import ksbLogo from "@/assets/lmda/1766913993449_Ksblogo.png";
+import uolLogo from "@/assets/lmda/1766914004535_University_of_Lahore_(logo).png";
 
 const TrustBar = () => {
+  const partners = [
+    { name: "USAID", logo: usaidLogo },
+    { name: "Haier", logo: haierLogo },
+    { name: "KSB", logo: ksbLogo },
+    { name: "Allied Bank", logo: null }, // Will use text fallback
+    { name: "University of Lahore", logo: uolLogo },
+  ];
+
   return (
-    <section className="py-10 bg-foreground">
+    <section className="py-12 bg-secondary border-y border-border">
       <div className="container-wide">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-sm font-medium text-background/50 uppercase tracking-widest">
+        <div className="flex flex-col items-center gap-8">
+          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest text-center">
             Trusted by Leading Organizations
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-10 md:gap-14">
-            {content.partners.slice(0, 5).map((partner) => (
-              <div
-                key={partner.name}
-                className="flex items-center justify-center h-12"
-              >
+          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-16">
+            {partners.map((partner) => (
+              <div key={partner.name} className="flex items-center justify-center h-16">
                 {partner.logo ? (
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="h-10 w-auto object-contain brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                    className="h-12 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
                   />
                 ) : (
-                  <span className="text-sm font-semibold text-background/50 uppercase tracking-wide">
+                  <span className="text-base font-bold text-muted-foreground uppercase tracking-wide">
                     {partner.name}
                   </span>
                 )}

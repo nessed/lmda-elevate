@@ -1,106 +1,160 @@
-import content from "@/data/content";
-
 const Trainers = () => {
-  // Helper to extract credentials from name/role
-  const getCredentials = (name: string, role: string) => {
-    const creds: string[] = [];
-    if (name.includes("PhD")) creds.push("PhD (USA)");
-    if (name.includes("T.I")) creds.push("T.I.");
-    if (name.includes("Dr.") && !name.includes("PhD")) creds.push("PhD");
-    if (name.includes("Engr.")) creds.push("Engineer");
-    if (role.includes("Psychologist")) creds.push("Psychologist");
-    return creds;
-  };
+  const facilitators = [
+    {
+      name: "Prof. Dr. Ali Sajid",
+      credentials: "T.I. (Tamgha-e-Imtiaz)",
+      mastery: "Inspirational Leadership & Sales Growth",
+      image: "/src/assets/lmda/1766914035711_alisajid.jpg",
+      bio: "Presidential Award Winner with 28+ years of transforming organizations across Pakistan and internationally.",
+      highlight: "Presidential Award Winner",
+    },
+    {
+      name: "Max Babri",
+      credentials: "Clinical Psychologist & Certified Hypnotherapist",
+      mastery: "Performance Coaching & Behavioral Excellence",
+      image: null,
+      bio: "40+ years of clinical practice with UN agencies and the Pakistan Cricket Board. Elite corporate coach specializing in high-performance mindsets.",
+      highlight: "UN & PCB Consultant",
+    },
+    {
+      name: "Ambassador Khayyam Akbar",
+      credentials: "Former Pakistani Ambassador to Spain",
+      mastery: "Executive Diplomacy & Refined Communication",
+      image: null,
+      bio: "30+ years in international diplomacy and executive communication. Master of high-stakes negotiation and cross-cultural leadership.",
+      highlight: "International Diplomat",
+    },
+    {
+      name: "Brig. (R) Tariq Javed",
+      credentials: "Former Commandant, NUST College of E&ME",
+      mastery: "Leadership Presence & Strategic Decision-Making",
+      image: null,
+      bio: "35+ years of military leadership. Expert in professional presence, command authority, and strategic thinking under pressure.",
+      highlight: "Military Leadership Expert",
+    },
+    {
+      name: "Adeel Anwar",
+      credentials: "CHRO, Air Link Communication",
+      mastery: "Organizational Development & Talent Strategy",
+      image: null,
+      bio: "23+ years in HR leadership with Coca-Cola, EY, and Air Link. Fortune 500 experience in building high-performance cultures.",
+      highlight: "Fortune 500 CHRO",
+    },
+  ];
 
   return (
-    <section id="trainers" className="section-padding bg-background">
+    <section id="facilitators" className="py-24 bg-secondary">
       <div className="container-wide">
         {/* Section Header */}
-        <div className="max-w-2xl mb-16">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-12 h-px bg-accent" />
             <span className="text-sm font-medium text-accent uppercase tracking-widest">
-              Our Experts
+              Elite Board of Facilitators
             </span>
+            <div className="w-12 h-px bg-accent" />
           </div>
-          <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
-            Led by Industry Authorities
+          <h2 className="heading-serif text-4xl md:text-5xl text-primary mb-4 font-bold">
+            Learn from Pakistan's Top Minds
           </h2>
-          <p className="text-muted-foreground">
-            Our team combines academic excellence with decades of real-world consulting experience.
+          <p className="text-lg text-muted-foreground font-medium">
+            A Retired Brigadier. A Former Ambassador. A Presidential Award Winner. This is elite-tier corporate access.
           </p>
         </div>
 
-        {/* Lead Expert - Prof. Ali Sajid */}
-        <div className="mb-12 p-8 bg-foreground text-background flex flex-col md:flex-row gap-8 items-center">
-          <div className="w-40 h-40 flex-shrink-0 overflow-hidden" style={{ borderRadius: 0 }}>
-            {content.trainers[0].image ? (
-              <img
-                src={content.trainers[0].image}
-                alt={content.trainers[0].name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
-                <span className="text-4xl font-bold text-muted-foreground">AS</span>
-              </div>
-            )}
-          </div>
-          <div>
-            <div className="flex flex-wrap gap-2 mb-3">
-              <span className="badge-gold">PhD (USA)</span>
-              <span className="badge-gold">T.I.</span>
-              <span className="badge-gold">Lead Consultant</span>
-            </div>
-            <h3 className="heading-serif text-2xl md:text-3xl text-background mb-2">
-              {content.trainers[0].name}
-            </h3>
-            <p className="text-background/70">
-              {content.trainers[0].role}
-            </p>
-          </div>
-        </div>
+        {/* Facilitator Grid - Only show Prof. Dr. Ali Sajid with photo */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {facilitators.map((facilitator, index) => {
+            // Only render if we have an image (Prof. Dr. Ali Sajid)
+            if (!facilitator.image && index !== 0) {
+              return (
+                <div
+                  key={index}
+                  className="bg-white border-2 border-border hover:border-accent transition-all group p-8"
+                >
+                  {/* No image placeholder - just content */}
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-bold text-primary mb-2">
+                      {facilitator.name}
+                    </h3>
+                    <p className="text-sm text-accent font-semibold mb-3">
+                      {facilitator.credentials}
+                    </p>
 
-        {/* Other Experts Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {content.trainers.slice(1).map((trainer) => {
-            const credentials = getCredentials(trainer.name, trainer.role);
+                    {/* Highlight Badge */}
+                    {facilitator.highlight && (
+                      <div className="inline-block bg-accent px-3 py-1 mb-4">
+                        <p className="text-xs font-bold text-primary uppercase tracking-wide">
+                          {facilitator.highlight}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Mastery Tag */}
+                    <div className="bg-primary/5 border-l-4 border-primary px-4 py-3 mb-4">
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                        Mastery
+                      </p>
+                      <p className="text-sm font-bold text-primary">
+                        {facilitator.mastery}
+                      </p>
+                    </div>
+
+                    {/* Bio */}
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {facilitator.bio}
+                    </p>
+                  </div>
+                </div>
+              );
+            }
+
+            // Render with image for Prof. Dr. Ali Sajid
             return (
               <div
-                key={trainer.id}
-                className="card-authority p-0 overflow-hidden"
+                key={index}
+                className="bg-white border-2 border-border hover:border-accent transition-all group"
               >
-                {/* Photo */}
-                <div className="aspect-[4/5] bg-muted">
-                  {trainer.image ? (
-                    <img
-                      src={trainer.image}
-                      alt={trainer.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-4xl font-bold text-muted-foreground/30">
-                        {trainer.name.charAt(0)}
-                      </span>
-                    </div>
-                  )}
+                {/* Image */}
+                <div className="aspect-square bg-secondary flex items-center justify-center overflow-hidden">
+                  <img
+                    src={facilitator.image}
+                    alt={facilitator.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  />
                 </div>
 
-                {/* Info */}
-                <div className="p-4">
-                  {credentials.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {credentials.slice(0, 2).map((cred) => (
-                        <span key={cred} className="badge-gold text-[10px]">{cred}</span>
-                      ))}
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-primary mb-2">
+                    {facilitator.name}
+                  </h3>
+                  <p className="text-sm text-accent font-semibold mb-3">
+                    {facilitator.credentials}
+                  </p>
+
+                  {/* Highlight Badge */}
+                  {facilitator.highlight && (
+                    <div className="inline-block bg-accent px-3 py-1 mb-4">
+                      <p className="text-xs font-bold text-primary uppercase tracking-wide">
+                        {facilitator.highlight}
+                      </p>
                     </div>
                   )}
-                  <h3 className="text-sm font-semibold text-foreground mb-1 line-clamp-1">
-                    {trainer.name.replace(/, PhD.*| T\.I\.?|Dr\. |Engr\. /g, '')}
-                  </h3>
-                  <p className="text-xs text-muted-foreground line-clamp-1">
-                    {trainer.role}
+
+                  {/* Mastery Tag */}
+                  <div className="bg-primary/5 border-l-4 border-primary px-4 py-3 mb-4">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                      Mastery
+                    </p>
+                    <p className="text-sm font-bold text-primary">
+                      {facilitator.mastery}
+                    </p>
+                  </div>
+
+                  {/* Bio */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {facilitator.bio}
                   </p>
                 </div>
               </div>

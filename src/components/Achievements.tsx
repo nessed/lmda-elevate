@@ -1,98 +1,120 @@
-import content from "@/data/content";
-
-// Import event photos
-import leadershipCamp from "@/assets/lmda/1766913795323_leadership camp.png";
-import dynamicPro from "@/assets/lmda/1766913791083_dynamic professional.png";
-import eventOne from "@/assets/lmda/1766913733562_one.png";
-import eventFour from "@/assets/lmda/1766913752284_four.png";
-
-const eventPhotos = [leadershipCamp, dynamicPro, eventOne, eventFour];
+import leadershipCamp1 from "@/assets/lmda/1766913795323_leadership camp.png";
+import leadershipCamp2 from "@/assets/lmda/1766913791083_dynamic professional.png";
+import workshop1 from "@/assets/lmda/1766913733562_one.png";
+import workshop2 from "@/assets/lmda/1766913752284_four.png";
+import workshop3 from "@/assets/lmda/1766913760550_five.png";
+import workshop4 from "@/assets/lmda/1766913771732_six.png";
 
 const Achievements = () => {
-  return (
-    <section id="achievements" className="section-padding bg-background">
-      <div className="container-wide">
-        {/* Track Record Section */}
-        <div className="mb-20">
-          <div className="max-w-2xl mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-px bg-accent" />
-              <span className="text-sm font-medium text-accent uppercase tracking-widest">
-                Track Record
-              </span>
-            </div>
-            <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
-              Proven Results
-            </h2>
-            <p className="text-muted-foreground">
-              Our training programs deliver measurable improvements across key organizational metrics.
-            </p>
-          </div>
+  const gallery = [
+    {
+      image: leadershipCamp1,
+      caption: "Leading with Empathy — Punjab Police College, Sihala",
+      location: "Punjab Police College, Sihala",
+    },
+    {
+      image: workshop1,
+      caption: "AI for Excellence — PPMI Complex, Islamabad",
+      location: "PPMI Complex, Islamabad",
+    },
+    {
+      image: workshop2,
+      caption: "Conflict Resolution Mastery — TEVTA Bahawalpur",
+      location: "TEVTA Bahawalpur",
+    },
+    {
+      image: leadershipCamp2,
+      caption: "Sales KPI Analysis Workshop — Corporate Training Center, Lahore",
+      location: "Lahore",
+    },
+    {
+      image: workshop3,
+      caption: "NLP Communication Excellence — Government Engineering Academy",
+      location: "Islamabad",
+    },
+    {
+      image: workshop4,
+      caption: "Strategic Leadership Development — Allied Bank Head Office",
+      location: "Karachi",
+    },
+  ];
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {content.metrics.map((metric) => (
-              <div
-                key={metric.label}
-                className="card-authority p-6 text-center"
-              >
-                <div className="heading-serif text-4xl md:text-5xl font-bold text-foreground mb-2">
-                  {metric.value}<span className="text-accent">%</span>
-                </div>
-                <div className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
-                  {metric.label}
-                </div>
-              </div>
-            ))}
+  return (
+    <section id="gallery" className="py-24 bg-white">
+      <div className="container-wide">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-12 h-px bg-accent" />
+            <span className="text-sm font-medium text-accent uppercase tracking-widest">
+              Field Evidence
+            </span>
+            <div className="w-12 h-px bg-accent" />
           </div>
+          <h2 className="heading-serif text-4xl md:text-5xl text-primary mb-4">
+            Training in Action Across Pakistan
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Real workshops. Real locations. Real transformation.
+          </p>
         </div>
 
-        {/* Events Gallery */}
-        <div>
-          <div className="max-w-2xl mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-px bg-accent" />
-              <span className="text-sm font-medium text-accent uppercase tracking-widest">
-                In Action
-              </span>
-            </div>
-            <h2 className="heading-serif text-3xl md:text-4xl text-foreground mb-4">
-              Training Events & Workshops
-            </h2>
-          </div>
-
-          {/* Photo Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {eventPhotos.map((photo, index) => (
-              <div
-                key={index}
-                className="aspect-[4/3] overflow-hidden"
-                style={{ borderRadius: 0 }}
-              >
+        {/* Gallery Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {gallery.map((item, index) => (
+            <div
+              key={index}
+              className="group relative overflow-hidden border-2 border-border hover:border-accent transition-all"
+            >
+              {/* Image */}
+              <div className="aspect-[4/3] overflow-hidden bg-secondary">
                 <img
-                  src={photo}
-                  alt={`LMDA Training Event ${index + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  src={item.image}
+                  alt={item.caption}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-            ))}
-          </div>
 
-          {/* Achievement Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mt-8">
-            {content.achievements.slice(0, 3).map((achievement) => (
-              <div
-                key={achievement.id}
-                className="card-authority p-6"
-              >
-                <h3 className="text-base font-semibold text-foreground mb-2">
-                  {achievement.title}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {achievement.description}
+              {/* Caption Overlay */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary via-primary/95 to-transparent p-6 pt-12">
+                <p className="text-sm text-white font-medium leading-relaxed mb-1">
+                  {item.caption}
+                </p>
+                <p className="text-xs text-accent font-semibold uppercase tracking-wide">
+                  {item.location}
                 </p>
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Stats Bar */}
+        <div className="mt-16 pt-12 border-t border-border">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-accent mb-2">28+</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wide">
+                Years of Excellence
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-accent mb-2">10,000+</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wide">
+                Professionals Trained
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-accent mb-2">92%</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wide">
+                Satisfaction Rate
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-accent mb-2">50+</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wide">
+                Partner Organizations
+              </div>
+            </div>
           </div>
         </div>
       </div>

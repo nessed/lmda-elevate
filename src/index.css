@@ -8,8 +8,8 @@
 
 @layer base {
   :root {
-    /* Midnight Navy & Executive Gold Palette */
-    --background: 220 20% 98%;
+    /* White Background + Executive Gold + Navy Blue */
+    --background: 0 0% 100%;
     --foreground: 220 40% 13%;
     
     --card: 0 0% 100%;
@@ -47,6 +47,12 @@
     --lmda-gold: 42 78% 55%;
     --lmda-grey: 220 15% 55%;
     --lmda-light: 220 20% 98%;
+
+    /* Mapped for Tailwind Config Consistency */
+    --lmda-blue: 225 73% 57%; /* Bright Royal Blue from Logo */
+    --lmda-yellow: 45 93% 47%; /* Golden Yellow from Logo */
+    --lmda-charcoal: 220 40% 13%;
+    --lmda-light-grey: 220 20% 98%;
     
     /* Typography */
     --font-serif: 'Playfair Display', Georgia, serif;
