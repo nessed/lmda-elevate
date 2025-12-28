@@ -1,184 +1,164 @@
-import { Clock, Calendar, Award, ArrowRight, BadgeCheck, CalendarDays } from "lucide-react";
+import { ArrowRight, Calendar, Clock, BadgeCheck, Phone, Sparkles } from "lucide-react";
 import zoomImage from "@/assets/zoomimagess.png";
 
 const ProductGrid = () => {
-  const products = [
+  const sessions = [
     {
-      icon: Clock,
-      title: "Free Power Talks",
-      duration: "60-Minute Sessions",
-      description: "High-impact online sessions covering business growth fundamentals. Perfect for busy professionals seeking quick, actionable insights.",
-      features: [
-        "Live Q&A with experts",
-        "Practical frameworks",
-        "Networking opportunities",
-      ],
-      cta: "Register for Next Session",
-      ctaLink: "#contact",
-      accent: "bg-accent/10 border-accent",
-      price: null,
+      stream: "Free Power Talk",
+      title: "Business Growth Fundamentals",
+      date: "Saturday, Jan 15",
+      time: "06:15 PM",
+      price: "FREE",
+      image: "bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900",
       cpd: null,
-      nextDate: "Next Session: Jan 15, 2025",
+      highlight: true,
     },
     {
-      icon: Calendar,
-      title: "Specialized Workshops",
-      duration: "1-Day Intensives",
-      description: "Deep-dive training programs designed to transform your skills in a single day. Led by master facilitators with real-world experience.",
-      features: [
-        "Dec 06: Sales Performance Mastery",
-        "Dec 14: Customer Service Excellence",
-        "Jan 20: NLP Communication",
-      ],
-      cta: "View Workshop Calendar",
-      ctaLink: "#gallery",
-      accent: "bg-primary/5 border-primary",
+      stream: "1-Day Workshop",
+      title: "Sales Performance & KPIs",
+      date: "Saturday, Dec 06",
+      time: "10:00 AM",
       price: "PKR 1,200",
-      cpd: "0.5 CPD Points for Engineers",
-      nextDate: "Next: Dec 06, 2024",
+      image: "bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900",
+      cpd: "0.5 CPD Points",
+      highlight: false,
     },
     {
-      icon: Award,
-      title: "Professional Certifications",
-      duration: "3-Month Programs",
-      description: "Career-defining mastery programs for sales managers and executives. Earn recognized certifications that set you apart.",
-      features: [
-        "Employability & Soft Skills",
-        "4-weekend intensive format",
-        "Lifetime alumni network",
-      ],
-      cta: "Explore Certifications",
-      ctaLink: "#contact",
-      accent: "bg-accent/10 border-accent",
+      stream: "Professional Certification",
+      title: "Employability & Soft Skills",
+      date: "Starts May 03",
+      time: "Weekend Track",
       price: "PKR 12,800",
-      cpd: "Industry-recognized credentials",
-      nextDate: "Next Cohort: May 03, 2025",
+      image: "bg-gradient-to-br from-amber-900 via-yellow-800 to-orange-900",
+      cpd: "Certification",
+      highlight: false,
     },
   ];
 
   return (
-    <section id="programs" className="py-24 bg-white">
-      <div className="container-wide">
+    <section id="programs" className="py-24 bg-gradient-to-b from-slate-900 via-primary to-slate-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
+      
+      <div className="container-wide relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-px bg-accent" />
-            <span className="text-sm font-medium text-accent uppercase tracking-widest">
-              Three-Tier Learning Path
-            </span>
-            <div className="w-12 h-px bg-accent" />
+        <div className="text-center max-w-4xl mx-auto mb-16 px-6 py-14 bg-gradient-to-r from-accent via-accent to-yellow-500 relative overflow-hidden shadow-2xl shadow-accent/30">
+          {/* Decorative Lines */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-white/20" />
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-primary/30" />
+          
+          {/* Floating Badge */}
+          <div className="inline-flex items-center gap-2 py-1.5 px-4 bg-primary/90 rounded-full text-white text-xs font-mono mb-6 tracking-wider uppercase shadow-xl">
+            <Sparkles className="w-3 h-3 text-accent" />
+            Limited Seats Available
           </div>
-          <h2 className="heading-serif text-4xl md:text-5xl text-primary mb-4 font-bold">
-            Choose Your Growth Trajectory
+          
+          <h2 className="heading-serif text-4xl md:text-5xl text-primary mb-4 font-black relative z-10">
+            Upcoming Training Sessions
           </h2>
-          <p className="text-lg text-muted-foreground font-medium">
-            From free insights to career transformation—find the right fit for your goals
+          <p className="text-lg text-primary/80 font-bold max-w-2xl mx-auto relative z-10">
+            Select your track. Secure your seat. Scale your skills.
           </p>
         </div>
 
-        {/* Product Cards */}
+        {/* Active Sessions Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {products.map((product, index) => {
-            const Icon = product.icon;
-            return (
-              <div
-                key={index}
-                className={`border-2 ${product.accent} p-8 hover:shadow-lift transition-all group relative`}
-              >
-                {/* CPD Badge */}
-                {product.cpd && (
-                  <div className="absolute top-4 right-4 bg-accent text-accent-foreground px-3 py-1 text-xs font-bold uppercase">
-                    {product.cpd}
-                  </div>
-                )}
-
-                {/* Icon */}
-                <div className="mb-6">
-                  <Icon className="w-12 h-12 text-accent" />
+          {sessions.map((session, index) => (
+            <div
+              key={index}
+              className="flex flex-col bg-white border-4 border-accent shadow-2xl shadow-accent/20 hover:shadow-accent/40 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-3"
+            >
+              {/* Gold Top Bar */}
+              <div className="h-2 bg-gradient-to-r from-accent via-yellow-400 to-accent" />
+              
+              {/* The Visual */}
+              <div className={`h-56 ${session.image} relative overflow-hidden`}>
+                {/* Dark Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                
+                {/* Animated Grid Pattern */}
+                <div className="absolute inset-0 opacity-10" style={{
+                  backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
+                  backgroundSize: '20px 20px'
+                }} />
+                
+                {/* Placeholder Text */}
+                <div className="absolute inset-0 flex items-center justify-center text-white/20 font-black text-6xl uppercase tracking-[0.3em] select-none">
+                  LIVE
                 </div>
-
-                {/* Title & Duration */}
-                <div className="mb-4">
-                  <h3 className="text-2xl font-bold text-primary mb-2">
-                    {product.title}
-                  </h3>
-                  <p className="text-sm font-semibold text-accent uppercase tracking-wide">
-                    {product.duration}
-                  </p>
+                
+                {/* Authority Badge (Floating) */}
+                {session.cpd && (
+                  <div className="absolute top-4 left-4 bg-accent text-primary px-4 py-2 text-xs font-black uppercase shadow-xl flex items-center gap-2 border-2 border-primary/20">
+                    <BadgeCheck className="w-4 h-4" />
+                    {session.cpd}
+                  </div>
+                )}
+                
+                {/* Stream Label */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <span className="text-white text-xs font-black uppercase tracking-[0.2em] bg-primary px-4 py-2 inline-block border-l-4 border-accent">
+                    {session.stream}
+                  </span>
                 </div>
-
-                {/* Next Date Badge */}
-                {product.nextDate && (
-                  <div className="flex items-center gap-2 mb-4 bg-primary/5 px-3 py-2 border-l-4 border-accent">
-                    <CalendarDays className="w-4 h-4 text-accent" />
-                    <span className="text-sm font-bold text-primary">{product.nextDate}</span>
-                  </div>
-                )}
-
-                {/* Description */}
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {product.description}
-                </p>
-
-                {/* Features */}
-                <ul className="space-y-2 mb-6">
-                  {product.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm">
-                      <div className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span className="text-foreground font-medium">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Price */}
-                {product.price && (
-                  <div className="mb-6 pt-4 border-t border-border">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm text-muted-foreground">Investment:</span>
-                      <span className="text-2xl font-bold text-primary">{product.price}</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* CTA */}
-                <a
-                  href={product.ctaLink}
-                  className="inline-flex items-center gap-2 text-primary font-semibold hover:text-accent transition-colors group-hover:gap-3"
-                >
-                  {product.cta}
-                  <ArrowRight className="w-4 h-4" />
-                </a>
               </div>
-            );
-          })}
-        </div>
 
-        {/* Infrastructure Section */}
-        <div className="mt-16 pt-12 border-t border-border">
-          <div className="bg-secondary p-8 border-l-4 border-accent">
-            <div className="flex flex-col md:flex-row items-center gap-10">
-              <div className="flex-1">
-                <div className="flex items-start gap-4 mb-4">
-                  <BadgeCheck className="w-8 h-8 text-accent flex-shrink-0 mt-1" />
-                  <h3 className="text-2xl font-bold text-primary">
-                    Seamless Digital Delivery
-                  </h3>
+              {/* Card Content */}
+              <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-white to-slate-50 relative">
+                {/* Decorative Corner */}
+                <div className="absolute top-0 right-0 w-20 h-20 bg-accent/10" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
+                
+                {/* Title */}
+                <h3 className="heading-serif text-2xl font-black text-primary mb-4 leading-tight">
+                  {session.title}
+                </h3>
+
+                {/* Date/Time - Monospace */}
+                <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6 py-4 px-4 border-2 border-border bg-slate-100/80">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-accent" />
+                    <span className="font-bold">{session.date}</span>
+                  </div>
+                  <div className="w-px h-5 bg-border" />
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-accent" />
+                    <span className="font-bold">{session.time}</span>
+                  </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed font-medium text-lg">
-                  All workshops are delivered via <strong className="text-foreground text-primary">Zoom Pro HD</strong> with cloud-recorded sessions for 24/7 student access. Join from anywhere in Pakistan or abroad—no travel required.
-                </p>
-              </div>
-              <div className="flex-1 w-full md:max-w-md">
-                <div className="relative group overflow-hidden border-2 border-accent/20 rounded-lg shadow-xl">
-                  <img 
-                    src={zoomImage} 
-                    alt="Zoom Pro Training Session" 
-                    className="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent pointer-events-none" />
+
+                {/* Spacer */}
+                <div className="mt-auto">
+                  {/* Investment - HEAVY VISUAL WEIGHT */}
+                  <div className="mb-6 p-4 bg-primary border-l-4 border-accent">
+                    <span className="text-xs font-bold text-white/70 uppercase tracking-[0.2em] block mb-1">Investment</span>
+                    <span className="text-4xl md:text-5xl font-black text-accent drop-shadow-lg tracking-tight">{session.price}</span>
+                  </div>
+
+                  {/* Action */}
+                  <a
+                    href="https://wa.me/923103336485"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full py-5 bg-accent text-primary font-black hover:bg-primary hover:text-accent transition-all duration-300 uppercase tracking-wider text-base group/btn border-2 border-transparent hover:border-accent"
+                  >
+                    <Phone className="w-5 h-5 group-hover/btn:animate-bounce" />
+                    Register via WhatsApp
+                    <ArrowRight className="w-5 h-5 transform group-hover/btn:translate-x-2 transition-transform" />
+                  </a>
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        {/* Zoom Infrastructure */}
+        <div className="mt-20 pt-10 border-t border-white/10">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            <img src={zoomImage} alt="Zoom" className="h-12 w-auto brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300" />
+            <p className="text-sm text-white/70 font-medium text-center md:text-left">
+              <span className="text-accent font-bold">Seamless Digital Delivery.</span> All sessions hosted on Zoom Pro HD with 24/7 cloud recording access.
+            </p>
           </div>
         </div>
       </div>

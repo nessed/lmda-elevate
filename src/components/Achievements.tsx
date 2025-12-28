@@ -4,118 +4,136 @@ import workshop1 from "@/assets/lmda/1766913733562_one.png";
 import workshop2 from "@/assets/lmda/1766913752284_four.png";
 import workshop3 from "@/assets/lmda/1766913760550_five.png";
 import workshop4 from "@/assets/lmda/1766913771732_six.png";
+import { Eye, Users, Award, Building } from "lucide-react";
 
 const Achievements = () => {
-  const gallery = [
+  const cases = [
     {
       image: leadershipCamp1,
-      caption: "Leading with Empathy — Punjab Police College, Sihala",
-      location: "Punjab Police College, Sihala",
+      tag: "150+ Officials",
+      caption: "Punjab Police College, Sihala",
+      title: "Leading with Empathy",
+      icon: Users,
     },
     {
       image: workshop1,
-      caption: "AI for Excellence — PPMI Complex, Islamabad",
-      location: "PPMI Complex, Islamabad",
+      tag: "50+ Executives",
+      caption: "PPMI Complex, Islamabad",
+      title: "AI for Excellence",
+      icon: Award,
     },
     {
       image: workshop2,
-      caption: "Conflict Resolution Mastery — TEVTA Bahawalpur",
-      location: "TEVTA Bahawalpur",
+      tag: "100% Satisfaction",
+      caption: "TEVTA Bahawalpur",
+      title: "Conflict Resolution",
+      icon: Award,
     },
     {
       image: leadershipCamp2,
-      caption: "Sales KPI Analysis Workshop — Corporate Training Center, Lahore",
-      location: "Lahore",
+      tag: "Corporate Summit",
+      caption: "Lahore Training Center",
+      title: "Sales KPI Analysis",
+      icon: Building,
     },
     {
       image: workshop3,
-      caption: "NLP Communication Excellence — Government Engineering Academy",
-      location: "Islamabad",
+      tag: "Govt. Sector",
+      caption: "Engineering Academy",
+      title: "NLP Communication",
+      icon: Building,
     },
     {
       image: workshop4,
-      caption: "Strategic Leadership Development — Allied Bank Head Office",
-      location: "Karachi",
+      tag: "Allied Bank",
+      caption: "Karachi Head Office",
+      title: "Strategic Leadership",
+      icon: Building,
     },
   ];
 
   return (
-    <section id="gallery" className="py-24 bg-white">
-      <div className="container-wide">
+    <section id="gallery" className="py-24 bg-gradient-to-b from-slate-100 via-white to-slate-50 relative overflow-hidden">
+      {/* Ambient Background */}
+      <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl -translate-y-1/2 animate-pulse" style={{ animationDuration: '4s' }} />
+      <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+      
+      <div className="container-wide relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-px bg-accent" />
-            <span className="text-sm font-medium text-accent uppercase tracking-widest">
-              Field Evidence
-            </span>
-            <div className="w-12 h-px bg-accent" />
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8 bg-gradient-to-r from-primary via-primary to-primary/95 p-10 shadow-2xl relative overflow-hidden group">
+          {/* Animated Accent */}
+          <div className="absolute right-0 top-0 w-96 h-full bg-gradient-to-l from-accent/10 to-transparent transform skew-x-12 group-hover:translate-x-8 transition-transform duration-1000" />
+          <div className="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+              <Eye className="w-4 h-4 text-accent animate-pulse" />
+              <span className="text-accent font-mono text-sm tracking-widest uppercase">
+                Case Study Archive
+              </span>
+            </div>
+            <h2 className="heading-serif text-3xl md:text-5xl text-white font-bold leading-tight">
+              Field Intelligence:
+              <br />
+              <span className="text-accent">Training in Action</span>
+            </h2>
           </div>
-          <h2 className="heading-serif text-4xl md:text-5xl text-primary mb-4">
-            Training in Action Across Pakistan
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Real workshops. Real locations. Real transformation.
-          </p>
+          
+          <div className="relative z-10 flex gap-8">
+            <div className="text-center lg:text-right">
+              <span className="block text-4xl font-bold text-accent">10,000+</span>
+              <span className="text-xs text-white/70 uppercase tracking-wider">Professionals</span>
+            </div>
+            <div className="text-center lg:text-right">
+              <span className="block text-4xl font-bold text-accent">28+</span>
+              <span className="text-xs text-white/70 uppercase tracking-wider">Years</span>
+            </div>
+          </div>
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {gallery.map((item, index) => (
-            <div
-              key={index}
-              className="group relative overflow-hidden border-2 border-border hover:border-accent transition-all"
-            >
-              {/* Image */}
-              <div className="aspect-[4/3] overflow-hidden bg-secondary">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+          {cases.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={index}
+                className="group relative aspect-[3/2] overflow-hidden bg-primary cursor-pointer transform hover:scale-[1.02] transition-all duration-500"
+              >
+                {/* Image with Zoom Effect */}
                 <img
                   src={item.image}
-                  alt={item.caption}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  alt={item.title}
+                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out"
                 />
-              </div>
 
-              {/* Caption Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary via-primary/95 to-transparent p-6 pt-12">
-                <p className="text-sm text-white font-medium leading-relaxed mb-1">
-                  {item.caption}
-                </p>
-                <p className="text-xs text-accent font-semibold uppercase tracking-wide">
-                  {item.location}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500" />
+                
+                {/* Hover Shine Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
-        {/* Stats Bar */}
-        <div className="mt-16 pt-12 border-t border-border">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">28+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">
-                Years of Excellence
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  {/* Outcome Tag */}
+                  <div className="inline-flex items-center gap-1.5 bg-accent text-primary text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 mb-3 shadow-lg">
+                    <Icon className="w-3 h-3" />
+                    {item.tag}
+                  </div>
+                  
+                  <h3 className="text-white font-bold text-lg leading-tight mb-1 drop-shadow-lg">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/80 text-xs font-mono uppercase tracking-wide">
+                    📍 {item.caption}
+                  </p>
+                </div>
+
+                {/* Corner Accent */}
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-accent/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">10,000+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">
-                Professionals Trained
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">92%</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">
-                Satisfaction Rate
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">50+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">
-                Partner Organizations
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
