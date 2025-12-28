@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,7 @@ const workshopSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200),
   description: z.string().max(2000).optional(),
   type: z.enum(['series', 'free_workshop', 'paid_workshop']),
+  status: z.enum(['upcoming', 'open', 'selling_fast', 'fully_booked', 'completed']),
   price: z.number().min(0).max(1000000),
   trainer_name: z.string().max(100).optional(),
   date_time: z.string().min(1, 'Date and time is required'),
@@ -23,9 +24,14 @@ const workshopSchema = z.object({
 });
 
 const WorkshopUpload = () => {
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get('id');
+  const isEditMode = !!editId;
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState<'series' | 'free_workshop' | 'paid_workshop'>('paid_workshop');
+  const [status, setStatus] = useState<'upcoming' | 'open' | 'selling_fast' | 'fully_booked' | 'completed'>('open');
   const [price, setPrice] = useState('');
   const [trainerName, setTrainerName] = useState('');
   const [dateTime, setDateTime] = useState('');
@@ -34,8 +40,55 @@ const WorkshopUpload = () => {
   const [flyerPreview, setFlyerPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // New state to hold the original flyer URL when editing
+  const [existingFlyerUrl, setExistingFlyerUrl] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Fetch data if in edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      const fetchWorkshop = async () => {
+        setIsLoading(true);
+        const { data, error } = await supabase
+          .from('workshops')
+          .select('*')
+          .eq('id', editId)
+          .single();
+
+        if (error) {
+          console.error('Error fetching workshop:', error);
+          toast({
+            title: 'Error',
+            description: 'Failed to load workshop data.',
+            variant: 'destructive',
+          });
+          navigate('/admin/workshops');
+        } else if (data) {
+          setTitle(data.title);
+          setDescription(data.description || '');
+          setType(data.type);
+          setStatus(data.status || 'open');
+          setPrice(data.price.toString());
+          setTrainerName(data.trainer_name || '');
+          // Format date for datetime-local input: YYYY-MM-DDThh:mm
+          const date = new Date(data.date_time);
+          const formattedDate = date.toISOString().slice(0, 16); // Extract YYYY-MM-DDThh:mm
+          setDateTime(formattedDate);
+          setCpdPoints(data.cpd_points);
+          
+          if (data.flyer_url) {
+            setExistingFlyerUrl(data.flyer_url);
+            setFlyerPreview(data.flyer_url);
+          }
+        }
+        setIsLoading(false);
+      };
+
+      fetchWorkshop();
+    }
+  }, [editId, isEditMode, navigate, toast]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,6 +111,7 @@ const WorkshopUpload = () => {
       }
       setFlyer(file);
       setFlyerPreview(URL.createObjectURL(file));
+      // Clear existing flyer URL if a new file is chosen, so we know to upload
     }
   };
 
@@ -71,6 +125,7 @@ const WorkshopUpload = () => {
         title: title.trim(),
         description: description.trim(),
         type,
+        status,
         price: type === 'free_workshop' ? 0 : parseFloat(price) || 0,
         trainer_name: trainerName.trim(),
         date_time: dateTime,
@@ -87,14 +142,14 @@ const WorkshopUpload = () => {
         return;
       }
 
-      let flyerUrl = null;
+      let flyerUrl = existingFlyerUrl;
 
-      // Upload flyer if provided
+      // Upload flyer if provided (overrides existing)
       if (flyer) {
         const fileExt = flyer.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
 
-        const { error: uploadError, data: uploadData } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('workshop-flyers')
           .upload(fileName, flyer);
 
@@ -107,32 +162,52 @@ const WorkshopUpload = () => {
         flyerUrl = publicUrl;
       }
 
-      // Insert workshop
-      const { error: insertError } = await supabase.from('workshops').insert({
+      const workshopData = {
         title: validation.data.title,
         description: validation.data.description || null,
         type: validation.data.type,
+        status: validation.data.status,
         price: validation.data.price,
         trainer_name: validation.data.trainer_name || null,
         date_time: new Date(validation.data.date_time).toISOString(),
         cpd_points: validation.data.cpd_points,
         flyer_url: flyerUrl,
-        is_active: true,
-      });
+        is_active: true, // Default to true on create/update
+      };
 
-      if (insertError) throw insertError;
+      if (isEditMode) {
+        // UPDATE
+        const { error: updateError } = await supabase
+          .from('workshops')
+          .update(workshopData)
+          .eq('id', editId);
+        
+        if (updateError) throw updateError;
 
-      toast({
-        title: 'Workshop Created',
-        description: 'Your workshop has been published successfully.',
+        toast({
+          title: 'Workshop Updated',
+          description: 'Your changes have been saved.',
+        });
+      } else {
+        // CREATE
+        const { error: insertError } = await supabase
+          .from('workshops')
+          .insert(workshopData);
+
+        if (insertError) throw insertError;
+
+        toast({
+          title: 'Workshop Created',
+          description: 'Your workshop has been published successfully.',
       });
+    }
 
       navigate('/admin/workshops');
     } catch (err) {
-      console.error('Error creating workshop:', err);
+      console.error('Error saving workshop:', err);
       toast({
         title: 'Error',
-        description: 'Failed to create workshop. Please try again.',
+        description: 'Failed to save workshop. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -146,15 +221,19 @@ const WorkshopUpload = () => {
       <header className="border-b border-primary-foreground/10">
         <div className="container-wide py-4 flex items-center gap-4">
           <button
-            onClick={() => navigate('/admin')}
+            onClick={() => navigate('/admin/workshops')}
             className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <img src={lmdaLogo} alt="LMDA" className="h-10" />
           <div>
-            <h1 className="heading-serif text-xl text-primary-foreground">Upload Workshop</h1>
-            <p className="text-sm text-primary-foreground/60">Add a new training program</p>
+            <h1 className="heading-serif text-xl text-primary-foreground">
+              {isEditMode ? 'Edit Workshop' : 'Upload Workshop'}
+            </h1>
+            <p className="text-sm text-primary-foreground/60">
+              {isEditMode ? 'Update training program details' : 'Add a new training program'}
+            </p>
           </div>
         </div>
       </header>
@@ -176,11 +255,19 @@ const WorkshopUpload = () => {
                 onClick={() => document.getElementById('flyer-input')?.click()}
               >
                 {flyerPreview ? (
-                  <img
-                    src={flyerPreview}
-                    alt="Flyer preview"
-                    className="max-h-64 mx-auto object-contain"
-                  />
+                  <div className="relative inline-block">
+                    <img
+                      src={flyerPreview}
+                      alt="Flyer preview"
+                      className="max-h-64 mx-auto object-contain"
+                    />
+                    {/* Overlay to hint at change */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity rounded-sm">
+                       <p className="text-white text-sm font-medium flex items-center gap-2">
+                         <Upload className="w-4 h-4" /> Change Image
+                       </p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="text-primary-foreground/60">
                     <Upload className="w-10 h-10 mx-auto mb-3 opacity-50" />
@@ -236,18 +323,12 @@ const WorkshopUpload = () => {
               </div>
             </div>
 
-            {/* Type & Price */}
+            {/* Type & Status & Price */}
             <div className="bg-primary-foreground/5 border border-primary-foreground/10 p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-primary-foreground font-medium flex items-center gap-2">
                     Category *
-                    <span className="group relative">
-                      <Info className="w-3.5 h-3.5 opacity-50" />
-                      <span className="absolute bottom-full left-0 mb-2 w-48 p-2 bg-foreground text-background text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                        Series: 3-month certifications. Paid: 1-day intensives. Free: Complimentary sessions.
-                      </span>
-                    </span>
                   </Label>
                   <Select value={type} onValueChange={(v: 'series' | 'free_workshop' | 'paid_workshop') => setType(v)}>
                     <SelectTrigger className="mt-1.5 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground">
@@ -260,8 +341,26 @@ const WorkshopUpload = () => {
                     </SelectContent>
                   </Select>
                 </div>
-
+                
                 <div>
+                  <Label className="text-primary-foreground font-medium flex items-center gap-2">
+                    Status *
+                  </Label>
+                  <Select value={status} onValueChange={(v: any) => setStatus(v)}>
+                    <SelectTrigger className="mt-1.5 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="upcoming">Upcoming</SelectItem>
+                      <SelectItem value="open">Open for Registration</SelectItem>
+                      <SelectItem value="selling_fast">Selling Fast 🔥</SelectItem>
+                      <SelectItem value="fully_booked">Fully Booked</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="col-span-2">
                   <Label htmlFor="price" className="text-primary-foreground font-medium">
                     Investment (PKR)
                   </Label>
@@ -325,7 +424,7 @@ const WorkshopUpload = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate('/admin')}
+                onClick={() => navigate('/admin/workshops')}
                 className="flex-1 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10"
               >
                 Cancel
@@ -335,7 +434,7 @@ const WorkshopUpload = () => {
                 disabled={isLoading}
                 className="flex-1 btn-gold"
               >
-                {isLoading ? 'Publishing...' : 'Publish Workshop'}
+                {isLoading ? (isEditMode ? 'Updating...' : 'Publishing...') : (isEditMode ? 'Update Workshop' : 'Publish Workshop')}
               </Button>
             </div>
           </form>

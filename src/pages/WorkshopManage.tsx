@@ -11,6 +11,7 @@ interface Workshop {
   id: string;
   title: string;
   type: 'series' | 'free_workshop' | 'paid_workshop';
+  status: 'upcoming' | 'open' | 'selling_fast' | 'fully_booked' | 'completed';
   price: number;
   date_time: string;
   is_active: boolean;
@@ -33,7 +34,7 @@ const WorkshopManage = () => {
         .order('date_time', { ascending: false });
 
       if (error) throw error;
-      setWorkshops(data || []);
+      setWorkshops(data as unknown as Workshop[] || []);
     } catch (err) {
       console.error('Error fetching workshops:', err);
       toast({
@@ -114,6 +115,11 @@ const WorkshopManage = () => {
         return type;
     }
   };
+  
+  const getStatusLabel = (status: string) => {
+    if (!status) return 'Open'; // Default fallback
+    return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  };
 
   const isPast = (dateStr: string) => new Date(dateStr) < new Date();
 
@@ -184,7 +190,7 @@ const WorkshopManage = () => {
                     </h3>
                     {isPast(workshop.date_time) && (
                       <span className="px-2 py-0.5 text-xs bg-muted text-muted-foreground">
-                        Completed
+                        Past Date
                       </span>
                     )}
                   </div>
@@ -192,6 +198,14 @@ const WorkshopManage = () => {
                     <span>{format(new Date(workshop.date_time), 'MMM d, yyyy h:mm a')}</span>
                     <span className="px-2 py-0.5 text-xs bg-primary-foreground/10">
                       {getTypeLabel(workshop.type)}
+                    </span>
+                    <span className={`px-2 py-0.5 text-xs rounded-sm ${
+                      workshop.status === 'completed' ? 'bg-slate-700 text-slate-200' :
+                      workshop.status === 'selling_fast' ? 'bg-orange-900/50 text-orange-200' :
+                      workshop.status === 'fully_booked' ? 'bg-red-900/50 text-red-200' :
+                      'bg-green-900/30 text-green-200'
+                    }`}>
+                      {getStatusLabel(workshop.status)}
                     </span>
                     {workshop.price > 0 && (
                       <span>PKR {workshop.price.toLocaleString()}</span>
@@ -216,6 +230,15 @@ const WorkshopManage = () => {
                     ) : (
                       <EyeOff className="w-4 h-4" />
                     )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate(`/admin/upload?id=${workshop.id}`)}
+                    className="text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                    title="Edit"
+                  >
+                    <Edit2 className="w-4 h-4" />
                   </Button>
                   <Button
                     variant="ghost"

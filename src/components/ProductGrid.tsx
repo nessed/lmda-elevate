@@ -8,6 +8,7 @@ interface Workshop {
   id: string;
   title: string;
   type: "series" | "free_workshop" | "paid_workshop";
+  status: "upcoming" | "open" | "selling_fast" | "fully_booked" | "completed";
   price: number | null;
   flyer_url: string | null;
   date_time: string;
@@ -28,6 +29,31 @@ const getPrice = (type: Workshop["type"], price: number | null) => {
   return price ? `PKR ${price.toLocaleString()}` : "FREE";
 };
 
+const getStatusBadge = (status: Workshop["status"]) => {
+  switch (status) {
+    case "selling_fast":
+      return (
+        <span className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1.5 text-xs font-bold uppercase shadow-lg rounded-full animate-pulse">
+          Selling Fast 🔥
+        </span>
+      );
+    case "fully_booked":
+      return (
+        <span className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1.5 text-xs font-bold uppercase shadow-lg rounded-full">
+          Fully Booked
+        </span>
+      );
+    case "completed":
+      return (
+        <span className="absolute top-4 right-4 bg-slate-600 text-white px-3 py-1.5 text-xs font-bold uppercase shadow-lg rounded-full">
+          Completed
+        </span>
+      );
+    default:
+      return null;
+  }
+};
+
 const ProductGrid = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
@@ -37,13 +63,16 @@ const ProductGrid = () => {
     const fetchWorkshops = async () => {
       const { data, error } = await supabase
         .from("workshops")
-        .select("id, title, type, price, flyer_url, date_time, cpd_points, trainer_name")
+        .select("id, title, type, status, price, flyer_url, date_time, cpd_points, trainer_name")
         .eq("is_active", true)
-        .gte("date_time", new Date().toISOString())
+        // Removed .gte("date_time", new Date().toISOString()) to allow manual status control
         .order("date_time", { ascending: true });
 
       if (!error && data) {
-        setWorkshops(data);
+        // Sort: Upcoming/Open/SellingFast first, then Completed/FullyBooked last? 
+        // For now, let's keep date order, but maybe filter out 'completed' if too old? 
+        // User wants to see 'completed' if set manually.
+        setWorkshops(data as Workshop[]);
       }
       setLoading(false);
     };
@@ -132,14 +161,15 @@ const ProductGrid = () => {
               const timeFormatted = format(new Date(workshop.date_time), "hh:mm a");
               const hasFlyer = workshop.flyer_url && !workshop.flyer_url.startsWith('bg-');
               const whatsappMessage = encodeURIComponent(`Hi, I want to register for ${workshop.title} on ${dateFormatted}.`);
+              const isCompleted = workshop.status === 'completed';
 
               return (
                 <div
                   key={workshop.id}
-                  className={`flex flex-col bg-white border-2 ${isHighlight ? 'border-accent shadow-xl shadow-accent/20' : 'border-border/50'} hover:border-accent hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-2`}
+                  className={`flex flex-col bg-white border-2 ${isHighlight ? 'border-accent shadow-xl shadow-accent/20' : 'border-border/50'} hover:border-accent hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-2 ${isCompleted ? 'grayscale opacity-75 hover:grayscale-0 hover:opacity-100' : ''}`}
                 >
                   {/* Highlight Glow */}
-                  {isHighlight && (
+                  {isHighlight && !isCompleted && (
                     <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
                   )}
                   
@@ -148,6 +178,9 @@ const ProductGrid = () => {
                     className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer group/image"
                     onClick={() => setSelectedImage(workshop.flyer_url || "bg-gradient-to-br from-primary via-primary/90 to-primary/80")}
                   >
+                    {/* Status Badge (Selling Fast, Completed, etc) */}
+                    {getStatusBadge(workshop.status)}
+
                     {/* Image Rendering Logic */}
                     {hasFlyer ? (
                       <img 
@@ -225,18 +258,27 @@ const ProductGrid = () => {
                       </div>
 
                       {/* Action */}
-                      <a
-                        href={`https://wa.me/923103336485?text=${whatsappMessage}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative shadow-lg hover:shadow-accent/20"
-                      >
-                        <span className="relative z-10 flex items-center gap-2">
-                          <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
-                          Register via WhatsApp
-                          <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                        </span>
-                      </a>
+                      {isCompleted ? (
+                        <button
+                          disabled
+                          className="flex items-center justify-center gap-2 w-full py-4 bg-gray-100 text-gray-400 font-bold uppercase tracking-wide text-sm cursor-not-allowed"
+                        >
+                          Registration Closed
+                        </button>
+                      ) : (
+                        <a
+                          href={`https://wa.me/923103336485?text=${whatsappMessage}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative shadow-lg hover:shadow-accent/20"
+                        >
+                          <span className="relative z-10 flex items-center gap-2">
+                            <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
+                            Register via WhatsApp
+                            <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                          </span>
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -244,6 +286,7 @@ const ProductGrid = () => {
             })}
           </div>
         )}
+
 
         {/* Zoom Infrastructure */}
         <div className="mt-20 pt-10 border-t border-border/40">
