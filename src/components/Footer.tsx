@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import content from "@/data/content";
 import lmdaLogo from "@/assets/lmda-logo.png";
 
@@ -106,6 +107,9 @@ const Footer = () => {
             <a href="#" className="hover:text-background/50 transition-colors">
               Terms of Service
             </a>
+            <Link to="/admin" className="hover:text-background/50 transition-colors">
+              Staff Portal
+            </Link>
           </div>
         </div>
       </div>
