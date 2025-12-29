@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, Clock, Sparkles, X, Loader2, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Clock, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import zoomImage from "@/assets/zoomimagess.png";
@@ -26,6 +27,27 @@ const getStreamLabel = (type: Workshop["type"]) => {
 const getPrice = (type: Workshop["type"], price: number | null) => {
   if (type === "free_workshop") return "FREE";
   return price ? `PKR ${price.toLocaleString()}` : "FREE";
+};
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
 
 const ProductGrid = () => {
@@ -80,15 +102,21 @@ const ProductGrid = () => {
       )}
       
       <div className="container-wide relative z-10">
-        {/* Section Header - App-Like on Mobile */}
-        <div className="px-5 sm:px-6 mb-6 sm:mb-10">
+        {/* Section Header */}
+        <motion.div 
+          className="px-5 sm:px-6 mb-6 sm:mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Explore Programs</p>
           <h2 className="heading-serif text-2xl sm:text-4xl lg:text-5xl text-primary font-bold">
             Upcoming Sessions
           </h2>
-        </div>
+        </motion.div>
 
-        {/* Workshop Grid - Mobile First */}
+        {/* Workshop Grid */}
         {loading ? (
           <div className="flex justify-center py-12 sm:py-16">
             <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-accent" />
@@ -99,8 +127,13 @@ const ProductGrid = () => {
             <p className="text-sm mt-2">Check back soon for new sessions!</p>
           </div>
         ) : (
-          /* Horizontal scroll on mobile, grid on tablet+ */
-          <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-6 -mx-4 sm:mx-0 scroll-smooth hide-scrollbar">
+          <motion.div 
+            className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-6 -mx-4 sm:mx-0 scroll-smooth hide-scrollbar"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
             {workshops.map((workshop) => {
               const priceLabel = getPrice(workshop.type, workshop.price);
               const dateObj = new Date(workshop.date_time);
@@ -111,18 +144,20 @@ const ProductGrid = () => {
               const whatsappMessage = encodeURIComponent(`Hi, I want to register for ${workshop.title} on ${format(dateObj, 'MMM dd')}.`);
 
               return (
-                <div
+                <motion.div
                   key={workshop.id}
-                  className="flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-300 flex flex-col border border-white/50"
+                  className="flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-shadow duration-300 flex flex-col border border-white/50"
+                  variants={cardVariants}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {/* Image Section - 4:5 Ratio */}
+                  {/* Image Section */}
                   <div 
                     className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer bg-gradient-to-br from-slate-100 to-slate-200"
                     onClick={() => hasFlyer && setSelectedImage(workshop.flyer_url)}
                   >
                     {hasFlyer ? (
                       <>
-                        {/* Blur background for aspect ratio fill */}
                         <div 
                           className="absolute inset-0 bg-cover bg-center blur-xl scale-110 opacity-50"
                           style={{ backgroundImage: `url(${workshop.flyer_url})` }}
@@ -141,9 +176,9 @@ const ProductGrid = () => {
                     )}
                   </div>
 
-                  {/* Content Section - Mobile Optimized */}
+                  {/* Content Section */}
                   <div className="p-4 sm:p-5 flex flex-col flex-grow">
-                    {/* Badges Row - Moved from image overlay */}
+                    {/* Badges Row */}
                     <div className="flex items-center gap-2 mb-3">
                       <span className="bg-primary/10 text-primary text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2 sm:px-3 py-1 rounded">
                         {getStreamLabel(workshop.type)}
@@ -177,7 +212,7 @@ const ProductGrid = () => {
                     {/* Divider */}
                     <div className="w-full h-px bg-border/40 my-3 sm:my-4" />
 
-                    {/* Footer Actions - Mobile Optimized */}
+                    {/* Footer Actions */}
                     <div className="mt-auto flex items-center justify-between gap-3">
                       <div className="flex flex-col min-w-0">
                         <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Investment</span>
@@ -188,28 +223,34 @@ const ProductGrid = () => {
                         href={`https://wa.me/923103336485?text=${whatsappMessage}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 bg-gradient-to-r from-primary to-slate-800 text-white px-6 py-3 rounded-xl hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-bold shadow-lg shadow-primary/20 flex-shrink-0"
+                        className="shimmer-gold flex items-center gap-2 bg-gradient-to-r from-primary to-slate-800 text-white px-6 py-3 rounded-xl hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-bold shadow-lg shadow-primary/20 flex-shrink-0"
                       >
                         <span className="hidden xs:inline">Register</span>
                         <ArrowRight className="w-4 h-4" />
                       </a>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         )}
 
-        {/* Zoom Infrastructure - Mobile Optimized */}
-        <div className="mt-12 sm:mt-16 lg:mt-20 pt-8 sm:pt-10 border-t border-border/40">
+        {/* Zoom Infrastructure */}
+        <motion.div 
+          className="mt-12 sm:mt-16 lg:mt-20 pt-8 sm:pt-10 border-t border-border/40"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 opacity-80">
             <img src={zoomImage} alt="Zoom" className="h-8 sm:h-10 w-auto grayscale" />
             <p className="text-xs sm:text-sm text-muted-foreground font-medium text-center">
               <span className="text-primary font-bold">Seamless Digital Delivery.</span> All sessions on Zoom Pro HD with cloud recording.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

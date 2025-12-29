@@ -1,3 +1,25 @@
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
 const Trainers = () => {
   const facilitators = [
     {
@@ -46,7 +68,13 @@ const Trainers = () => {
     <section id="facilitators" className="py-12 sm:py-16 lg:py-24 bg-secondary">
       <div className="container-wide px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16">
+        <motion.div 
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <div className="w-8 sm:w-12 h-px bg-accent" />
             <span className="text-xs sm:text-sm font-medium text-accent uppercase tracking-widest">
@@ -60,17 +88,28 @@ const Trainers = () => {
           <p className="text-sm sm:text-base lg:text-lg text-muted-foreground font-medium px-4">
             A Retired Brigadier. A Former Ambassador. A Presidential Award Winner.
           </p>
-        </div>
+        </motion.div>
 
         {/* Facilitator Carousel (Mobile) / Grid (Desktop) */}
-        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-0 -mx-4 sm:mx-0 hide-scrollbar">
+        <motion.div 
+          className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 px-4 md:px-0 -mx-4 md:mx-0 hide-scrollbar"
+          style={{ scrollSnapType: 'x mandatory' }}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {facilitators.map((facilitator, index) => {
             const hasImage = facilitator.image && index === 0;
             
             return (
-              <div
+              <motion.div
                 key={index}
-                className="flex-shrink-0 w-[80vw] sm:w-auto snap-center sm:snap-start bg-white border border-border hover:border-accent transition-all group overflow-hidden rounded-2xl sm:rounded-none"
+                className="flex-shrink-0 w-[80vw] md:w-auto snap-center md:snap-start bg-white border border-border hover:border-accent transition-all group overflow-hidden rounded-2xl md:rounded-none"
+                style={{ scrollSnapAlign: 'center' }}
+                variants={cardVariants}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
               >
                 {/* Image for Prof. Dr. Ali Sajid */}
                 {hasImage && (
@@ -116,10 +155,10 @@ const Trainers = () => {
                     {facilitator.bio}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
