@@ -1,26 +1,15 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const Trainers = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+
   const facilitators = [
     {
       name: "Prof. Dr. Ali Sajid",
@@ -64,52 +53,120 @@ const Trainers = () => {
     },
   ];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Header badge fade-in
+      if (headerRef.current) {
+        const badge = headerRef.current.querySelector('.header-badge');
+        const subtitle = headerRef.current.querySelector('.header-subtitle');
+        
+        gsap.from(badge, {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 85%",
+          },
+        });
+
+        gsap.from(subtitle, {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          delay: 0.3,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 85%",
+          },
+        });
+      }
+
+      // Text scrubbing - word by word fade in
+      if (headlineRef.current) {
+        const words = headlineRef.current.querySelectorAll('.scrub-word');
+        
+        gsap.from(words, {
+          opacity: 0.1,
+          y: 10,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: headlineRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+          },
+        });
+      }
+
+      // Trainer cards stagger
+      if (cardsContainerRef.current) {
+        const cards = cardsContainerRef.current.querySelectorAll('.trainer-card');
+        
+        gsap.from(cards, {
+          y: 50,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: cardsContainerRef.current,
+            start: "top 80%",
+          },
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Split headline into words for text scrubbing
+  const headline = "Learn from Pakistan's Top Minds";
+  const headlineWords = headline.split(' ');
+
   return (
-    <section id="facilitators" className="py-12 sm:py-16 lg:py-24 bg-secondary">
+    <section ref={sectionRef} id="facilitators" className="py-12 sm:py-16 lg:py-24 bg-secondary">
       <div className="container-wide px-4 sm:px-6">
         {/* Section Header */}
-        <motion.div 
-          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16">
+          <div className="header-badge flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <div className="w-8 sm:w-12 h-px bg-accent" />
             <span className="text-xs sm:text-sm font-medium text-accent uppercase tracking-widest">
               Elite Facilitators
             </span>
             <div className="w-8 sm:w-12 h-px bg-accent" />
           </div>
-          <h2 className="heading-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary mb-3 sm:mb-4 font-bold">
-            Learn from Pakistan's Top Minds
+          <h2 
+            ref={headlineRef}
+            className="heading-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary mb-3 sm:mb-4 font-bold"
+          >
+            {headlineWords.map((word, index) => (
+              <span key={index} className="scrub-word inline-block mr-2 sm:mr-3">
+                {word}
+              </span>
+            ))}
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground font-medium px-4">
+          <p className="header-subtitle text-sm sm:text-base lg:text-lg text-muted-foreground font-medium px-4">
             A Retired Brigadier. A Former Ambassador. A Presidential Award Winner.
           </p>
-        </motion.div>
+        </div>
 
         {/* Facilitator Carousel (Mobile) / Grid (Desktop) */}
-        <motion.div 
+        <div 
+          ref={cardsContainerRef}
           className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 px-4 md:px-0 -mx-4 md:mx-0 hide-scrollbar"
-          style={{ scrollSnapType: 'x mandatory' }}
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
         >
           {facilitators.map((facilitator, index) => {
             const hasImage = facilitator.image && index === 0;
             
             return (
-              <motion.div
+              <div
                 key={index}
-                className="flex-shrink-0 w-[80vw] md:w-auto snap-center md:snap-start bg-white border border-border hover:border-accent transition-all group overflow-hidden rounded-2xl md:rounded-none"
-                style={{ scrollSnapAlign: 'center' }}
-                variants={cardVariants}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+                className="trainer-card flex-shrink-0 w-[80vw] md:w-auto snap-center md:snap-start bg-white border border-border hover:border-accent transition-all group overflow-hidden rounded-2xl md:rounded-none will-change-transform"
               >
                 {/* Image for Prof. Dr. Ali Sajid */}
                 {hasImage && (
@@ -155,10 +212,10 @@ const Trainers = () => {
                     {facilitator.bio}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
