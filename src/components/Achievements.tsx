@@ -53,14 +53,14 @@ const Achievements = () => {
   ];
 
   return (
-    <section id="gallery" className="py-24 bg-gradient-to-b from-slate-100 via-white to-slate-50 relative overflow-hidden">
+    <section id="gallery" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-slate-100 via-white to-slate-50 relative overflow-hidden">
       {/* Ambient Background */}
       <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl -translate-y-1/2 animate-pulse" style={{ animationDuration: '4s' }} />
       <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
       
       <div className="container-wide relative z-10">
-        {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8 bg-gradient-to-r from-primary via-primary to-primary/95 p-10 shadow-2xl relative overflow-hidden group">
+        {/* Section Header - Compact on Mobile */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-12 gap-4 sm:gap-8 bg-gradient-to-r from-primary via-primary to-primary/95 p-5 sm:p-10 shadow-2xl relative overflow-hidden group mx-4 sm:mx-0 rounded-2xl sm:rounded-none">
           {/* Animated Accent */}
           <div className="absolute right-0 top-0 w-96 h-full bg-gradient-to-l from-accent/10 to-transparent transform skew-x-12 group-hover:translate-x-8 transition-transform duration-1000" />
           <div className="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
@@ -91,14 +91,14 @@ const Achievements = () => {
           </div>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+        {/* Gallery Carousel (Mobile) / Grid (Desktop) */}
+        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-2 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-0 -mx-4 sm:mx-0 hide-scrollbar">
           {cases.map((item, index) => {
             const Icon = item.icon;
             return (
               <div
                 key={index}
-                className="group relative aspect-[3/2] overflow-hidden bg-primary cursor-pointer transform hover:scale-[1.02] transition-all duration-500"
+                className="flex-shrink-0 w-[75vw] sm:w-auto snap-center sm:snap-start group relative aspect-[3/2] overflow-hidden bg-primary cursor-pointer transform hover:scale-[1.02] transition-all duration-500 rounded-xl sm:rounded-none"
               >
                 {/* Image with Zoom Effect */}
                 <img

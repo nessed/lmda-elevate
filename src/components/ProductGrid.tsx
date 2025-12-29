@@ -139,26 +139,22 @@ const ProductGrid = () => {
                         <span className="text-sm mt-2">Poster Coming Soon</span>
                       </div>
                     )}
-                    
-                    {/* Stream Label Badge */}
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-white/95 backdrop-blur-sm text-primary text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2 sm:px-3 py-1 rounded shadow-sm">
-                        {getStreamLabel(workshop.type)}
-                      </span>
-                    </div>
-
-                    {/* CPD Badge */}
-                    {workshop.cpd_points && (
-                      <div className="absolute top-3 right-3">
-                        <span className="bg-accent text-primary text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                          0.5 CPD
-                        </span>
-                      </div>
-                    )}
                   </div>
 
                   {/* Content Section - Mobile Optimized */}
                   <div className="p-4 sm:p-5 flex flex-col flex-grow">
+                    {/* Badges Row - Moved from image overlay */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="bg-primary/10 text-primary text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2 sm:px-3 py-1 rounded">
+                        {getStreamLabel(workshop.type)}
+                      </span>
+                      {workshop.cpd_points && (
+                        <span className="bg-accent text-primary text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded">
+                          0.5 CPD
+                        </span>
+                      )}
+                    </div>
+
                     <div className="flex gap-3 sm:gap-4 mb-3 sm:mb-4">
                       {/* Date Box */}
                       <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary via-primary to-slate-800 text-white rounded-2xl shadow-lg shadow-primary/20">

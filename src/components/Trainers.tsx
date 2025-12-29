@@ -62,15 +62,15 @@ const Trainers = () => {
           </p>
         </div>
 
-        {/* Facilitator Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        {/* Facilitator Carousel (Mobile) / Grid (Desktop) */}
+        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-0 -mx-4 sm:mx-0 hide-scrollbar">
           {facilitators.map((facilitator, index) => {
             const hasImage = facilitator.image && index === 0;
             
             return (
               <div
                 key={index}
-                className="bg-white border border-border hover:border-accent transition-all group overflow-hidden"
+                className="flex-shrink-0 w-[80vw] sm:w-auto snap-center sm:snap-start bg-white border border-border hover:border-accent transition-all group overflow-hidden rounded-2xl sm:rounded-none"
               >
                 {/* Image for Prof. Dr. Ali Sajid */}
                 {hasImage && (
@@ -94,7 +94,7 @@ const Trainers = () => {
 
                   {/* Highlight Badge */}
                   {facilitator.highlight && (
-                    <div className="inline-block bg-accent px-2 sm:px-3 py-0.5 sm:py-1 mb-3 sm:mb-4">
+                    <div className="inline-block bg-accent px-2 sm:px-3 py-0.5 sm:py-1 mb-3 sm:mb-4 rounded">
                       <p className="text-[10px] sm:text-xs font-bold text-primary uppercase tracking-wide">
                         {facilitator.highlight}
                       </p>
@@ -102,7 +102,7 @@ const Trainers = () => {
                   )}
 
                   {/* Mastery Tag */}
-                  <div className="bg-primary/5 border-l-2 sm:border-l-4 border-primary px-3 sm:px-4 py-2 sm:py-3 mb-3 sm:mb-4">
+                  <div className="bg-primary/5 border-l-2 sm:border-l-4 border-primary px-3 sm:px-4 py-2 sm:py-3 mb-3 sm:mb-4 rounded-r-lg">
                     <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5 sm:mb-1">
                       Mastery
                     </p>
