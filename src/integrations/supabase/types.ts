@@ -96,6 +96,7 @@ export type Database = {
           id: string
           is_active: boolean | null
           price: number | null
+          status: string | null
           title: string
           trainer_id: string | null
           trainer_name: string | null
@@ -111,6 +112,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           price?: number | null
+          status?: string | null
           title: string
           trainer_id?: string | null
           trainer_name?: string | null
@@ -126,6 +128,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           price?: number | null
+          status?: string | null
           title?: string
           trainer_id?: string | null
           trainer_name?: string | null
