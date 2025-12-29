@@ -116,7 +116,7 @@ const ProductGrid = () => {
           </p>
         </div>
 
-        {/* Active Sessions Grid - Optimized Layout */}
+        {/* Premium Corporate Event Grid */}
         {loading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-accent" />
@@ -127,129 +127,98 @@ const ProductGrid = () => {
             <p className="text-sm mt-2">Check back soon for new training sessions!</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-8 items-start">
-            {workshops.map((workshop, index) => {
-              const isHighlight = index === 0;
-              const streamLabel = getStreamLabel(workshop.type);
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {workshops.map((workshop) => {
               const priceLabel = getPrice(workshop.type, workshop.price);
-              const dateFormatted = format(new Date(workshop.date_time), "EEEE, MMM dd");
-              const timeFormatted = format(new Date(workshop.date_time), "hh:mm a");
+              const dateObj = new Date(workshop.date_time);
+              const month = format(dateObj, "MMM");
+              const day = format(dateObj, "dd");
+              const time = format(dateObj, "hh:mm a");
               const hasFlyer = workshop.flyer_url && !workshop.flyer_url.startsWith('bg-');
-              const whatsappMessage = encodeURIComponent(`Hi, I want to register for ${workshop.title} on ${dateFormatted}.`);
+              const whatsappMessage = encodeURIComponent(`Hi, I want to register for ${workshop.title} on ${format(dateObj, 'MMM dd')}.`);
               const isCompleted = workshop.status === 'completed';
 
               return (
                 <div
                   key={workshop.id}
-                  className={`flex flex-col bg-white border-2 ${isHighlight ? 'border-accent shadow-xl shadow-accent/20' : 'border-border/50'} hover:border-accent hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 group relative overflow-hidden transform hover:-translate-y-2 ${isCompleted ? 'grayscale opacity-75 hover:grayscale-0 hover:opacity-100' : ''}`}
+                  className={`group bg-white rounded-xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl hover:border-accent/30 transition-all duration-500 flex flex-col ${isCompleted ? 'grayscale opacity-75' : ''}`}
                 >
-                  {/* Highlight Glow */}
-                  {isHighlight && !isCompleted && (
-                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
-                  )}
-                  
-                  {/* The Visual - Portrait Aspect Ratio (4:5) for Instagram Posters */}
+                  {/* Image Section - Clean & Unobstructed */}
                   <div 
-                    className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer group/image"
-                    onClick={() => setSelectedImage(workshop.flyer_url || "bg-gradient-to-br from-primary via-primary/90 to-primary/80")}
+                    className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer bg-slate-100"
+                    onClick={() => setSelectedImage(workshop.flyer_url || null)}
                   >
-
-                    {/* Image Rendering Logic */}
                     {hasFlyer ? (
-                      <img 
-                        src={workshop.flyer_url!} 
+                      <img
+                        src={workshop.flyer_url!}
                         alt={workshop.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary via-primary/90 to-primary/80 transition-transform duration-700 group-hover/image:scale-110">
-                        {/* Animated Grid Pattern */}
-                        <div className="absolute inset-0 opacity-20" style={{
-                          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                          backgroundSize: '20px 20px'
-                        }} />
-                        
-                        {/* Floating Particles */}
-                        <div className="absolute top-4 right-4 w-2 h-2 bg-white/30 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
-                        <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-accent/50 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
-
-                        <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-5xl uppercase tracking-[0.3em] select-none">
-                          POSTER
-                        </div>
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/20 font-bold text-4xl uppercase">
+                        No Poster
                       </div>
                     )}
-
-                    {/* Expand Overlay */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="bg-white/10 backdrop-blur-md border border-white/30 p-3 rounded-full transform scale-75 group-hover/image:scale-100 transition-transform duration-300">
-                        <Maximize2 className="w-6 h-6 text-white" />
-                      </div>
+                    
+                    {/* View Button Overlay */}
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                      <span className="bg-white/90 text-primary px-4 py-2 rounded-full text-sm font-bold shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        View Poster
+                      </span>
                     </div>
-                    
-                    {/* Authority Badge (Floating) */}
-                    {workshop.cpd_points && (
-                      <div className="absolute top-4 left-4 bg-accent text-primary px-3 py-1.5 text-xs font-bold uppercase shadow-lg flex items-center gap-1.5 rounded-full pointer-events-none">
-                        <BadgeCheck className="w-3.5 h-3.5" />
-                        0.5 CPD Points
-                      </div>
-                    )}
-                    
-                    {/* Stream Label */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-16 pointer-events-none">
-                      <span className="text-white text-xs font-bold uppercase tracking-widest bg-accent/90 px-3 py-1 inline-block shadow-sm">
-                        {streamLabel}
+
+                    {/* Stream Label Badge - Professional & Subtle */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-white/95 backdrop-blur-sm text-primary text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded shadow-sm">
+                        {getStreamLabel(workshop.type)}
                       </span>
                     </div>
                   </div>
 
-                  {/* Card Content - Flex logic to grow with content */}
-                  <div className="p-6 flex flex-col flex-grow relative">
-                    {/* Title */}
-                    <h3 className="heading-serif text-2xl font-bold text-primary mb-4 leading-tight group-hover:text-accent transition-colors duration-300">
-                      {workshop.title}
-                    </h3>
-
-                    {/* Date/Time - Monospace */}
-                    <div className="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6 py-3 border-y border-border/30 bg-slate-50/50">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-4 h-4 text-accent" />
-                        <span>{dateFormatted}</span>
+                  {/* Content Section */}
+                  <div className="p-6 flex flex-col flex-grow">
+                    <div className="flex gap-4 mb-4">
+                      {/* Date Box */}
+                      <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 bg-primary/5 rounded-lg border border-primary/10">
+                        <span className="text-xs font-bold text-accent uppercase">{month}</span>
+                        <span className="text-xl font-serif font-bold text-primary">{day}</span>
                       </div>
-                      <div className="w-px h-4 bg-border/50" />
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-4 h-4 text-accent" />
-                        <span>{timeFormatted}</span>
+                      
+                      {/* Title & Info */}
+                      <div>
+                        <h3 className="heading-serif text-xl font-bold text-primary leading-tight group-hover:text-accent transition-colors duration-300 line-clamp-2">
+                          {workshop.title}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                          <Clock className="w-3.5 h-3.5 text-accent" />
+                          <span>{time}</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Spacer */}
-                    <div className="mt-auto">
-                      {/* Investment */}
-                      <div className="flex items-baseline justify-between mb-6">
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Investment</span>
-                        <span className="text-3xl font-serif font-bold text-accent drop-shadow-sm">{priceLabel}</span>
+                    {/* Divider */}
+                    <div className="w-full h-px bg-border/40 my-4" />
+
+                    {/* Footer Actions */}
+                    <div className="mt-auto flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Investment</span>
+                        <span className="text-lg font-serif font-bold text-primary">{priceLabel}</span>
                       </div>
 
-                      {/* Action */}
                       {isCompleted ? (
-                        <button
-                          disabled
-                          className="flex items-center justify-center gap-2 w-full py-4 bg-gray-100 text-gray-400 font-bold uppercase tracking-wide text-sm cursor-not-allowed"
-                        >
-                          Registration Closed
-                        </button>
+                         <span className="px-4 py-2 bg-slate-100 text-slate-500 text-xs font-bold uppercase rounded cursor-not-allowed">
+                           Registration Closed
+                         </span>
                       ) : (
                         <a
                           href={`https://wa.me/923103336485?text=${whatsappMessage}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-bold hover:from-accent hover:to-accent/90 hover:text-primary transition-all duration-300 uppercase tracking-wide text-sm group/btn overflow-hidden relative shadow-lg hover:shadow-accent/20"
+                          className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded hover:bg-accent hover:text-primary transition-all duration-300 text-xs font-bold uppercase tracking-wide shadow-md hover:shadow-lg"
                         >
-                          <span className="relative z-10 flex items-center gap-2">
-                            <Phone className="w-4 h-4 group-hover/btn:animate-bounce" />
-                            Register via WhatsApp
-                            <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                          </span>
+                          Register
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </a>
                       )}
                     </div>
