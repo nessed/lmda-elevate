@@ -16,7 +16,6 @@ const workshopSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200),
   description: z.string().max(2000).optional(),
   type: z.enum(['series', 'free_workshop', 'paid_workshop']),
-  status: z.enum(['upcoming', 'open', 'selling_fast', 'fully_booked', 'completed']),
   price: z.number().min(0).max(1000000),
   trainer_name: z.string().max(100).optional(),
   date_time: z.string().min(1, 'Date and time is required'),
@@ -31,7 +30,6 @@ const WorkshopUpload = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState<'series' | 'free_workshop' | 'paid_workshop'>('paid_workshop');
-  const [status, setStatus] = useState<'upcoming' | 'open' | 'selling_fast' | 'fully_booked' | 'completed'>('open');
   const [price, setPrice] = useState('');
   const [trainerName, setTrainerName] = useState('');
   const [dateTime, setDateTime] = useState('');
@@ -69,7 +67,7 @@ const WorkshopUpload = () => {
           setTitle(data.title);
           setDescription(data.description || '');
           setType(data.type);
-          setStatus(data.status || 'open');
+          setPrice(data.price?.toString() || '0');
           setPrice(data.price.toString());
           setTrainerName(data.trainer_name || '');
           // Format date for datetime-local input: YYYY-MM-DDThh:mm
@@ -166,13 +164,12 @@ const WorkshopUpload = () => {
         title: validation.data.title,
         description: validation.data.description || null,
         type: validation.data.type,
-        status: validation.data.status,
         price: validation.data.price,
         trainer_name: validation.data.trainer_name || null,
         date_time: new Date(validation.data.date_time).toISOString(),
         cpd_points: validation.data.cpd_points,
         flyer_url: flyerUrl,
-        is_active: true, // Default to true on create/update
+        is_active: true,
       };
 
       if (isEditMode) {
@@ -342,24 +339,6 @@ const WorkshopUpload = () => {
                   </Select>
                 </div>
                 
-                <div>
-                  <Label className="text-primary-foreground font-medium flex items-center gap-2">
-                    Status *
-                  </Label>
-                  <Select value={status} onValueChange={(v: any) => setStatus(v)}>
-                    <SelectTrigger className="mt-1.5 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="upcoming">Upcoming</SelectItem>
-                      <SelectItem value="open">Open for Registration</SelectItem>
-                      <SelectItem value="selling_fast">Selling Fast 🔥</SelectItem>
-                      <SelectItem value="fully_booked">Fully Booked</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 <div className="col-span-2">
                   <Label htmlFor="price" className="text-primary-foreground font-medium">
                     Investment (PKR)
