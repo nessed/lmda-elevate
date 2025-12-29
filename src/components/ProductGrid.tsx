@@ -52,7 +52,7 @@ const ProductGrid = () => {
   }, []);
 
   return (
-    <section id="programs" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-white via-slate-50 to-white relative overflow-hidden">
+    <section id="programs" className="py-10 sm:py-16 lg:py-24 bg-slate-50 relative overflow-hidden">
       {/* Lightbox Modal */}
       {selectedImage && (
         <div 
@@ -73,33 +73,19 @@ const ProductGrid = () => {
             <img 
               src={selectedImage} 
               alt="Workshop Flyer" 
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
             />
           </div>
         </div>
       )}
-
-      {/* Mobile-optimized background */}
-      <div className="absolute top-0 left-0 w-48 sm:w-96 h-48 sm:h-96 bg-accent/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
       
-      <div className="container-wide relative z-10 px-4 sm:px-6">
-        {/* Section Header - Mobile Optimized */}
-        <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-12 lg:mb-16 px-4 sm:px-6 py-8 sm:py-10 lg:py-14 bg-gradient-to-r from-primary via-primary to-primary/95 relative overflow-hidden shadow-xl sm:shadow-2xl">
-          <div className="absolute top-0 left-0 w-1 sm:w-2 h-full bg-accent" />
-          <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
-          
-          {/* Badge - Smaller on Mobile */}
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-1.5 px-3 sm:px-4 border border-accent/40 rounded-full text-accent text-[10px] sm:text-xs font-mono mb-4 sm:mb-6 tracking-wider uppercase bg-primary/50 backdrop-blur-sm">
-            <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            Start Your Journey
-          </div>
-          
-          <h2 className="heading-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white mb-2 sm:mb-4 font-bold relative z-10">
-            Upcoming Training Sessions
+      <div className="container-wide relative z-10">
+        {/* Section Header - App-Like on Mobile */}
+        <div className="px-5 sm:px-6 mb-6 sm:mb-10">
+          <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Explore Programs</p>
+          <h2 className="heading-serif text-2xl sm:text-4xl lg:text-5xl text-primary font-bold">
+            Upcoming Sessions
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-white/80 font-medium max-w-2xl mx-auto relative z-10">
-            Select your track. Secure your seat.
-          </p>
         </div>
 
         {/* Workshop Grid - Mobile First */}
@@ -113,7 +99,8 @@ const ProductGrid = () => {
             <p className="text-sm mt-2">Check back soon for new sessions!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          /* Horizontal scroll on mobile, grid on tablet+ */
+          <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-6 -mx-4 sm:mx-0 scroll-smooth hide-scrollbar">
             {workshops.map((workshop) => {
               const priceLabel = getPrice(workshop.type, workshop.price);
               const dateObj = new Date(workshop.date_time);
@@ -126,7 +113,7 @@ const ProductGrid = () => {
               return (
                 <div
                   key={workshop.id}
-                  className="group bg-white rounded-xl overflow-hidden border border-border/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col"
+                  className="flex-shrink-0 w-[280px] sm:w-auto snap-start group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
                 >
                   {/* Image Section - 4:5 Ratio */}
                   <div 

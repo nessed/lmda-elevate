@@ -228,4 +228,13 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Hide scrollbar for mobile horizontal scrolling */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }

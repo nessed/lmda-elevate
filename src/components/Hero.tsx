@@ -3,7 +3,16 @@ import heroImage from "@/assets/cover.png";
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-[100svh] flex items-center bg-primary overflow-hidden">
+    <section id="home" className="relative min-h-[85vh] sm:min-h-[100svh] flex items-center bg-primary overflow-hidden">
+      {/* Simple Mobile Header */}
+      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-4 sm:hidden">
+        <img src={heroImage} alt="Logo" className="h-8 w-auto opacity-0" /> {/* Spacer */}
+        <span className="text-white/90 text-sm font-bold tracking-widest uppercase">LMDA</span>
+        <a href="#programs" className="text-accent text-xs font-bold uppercase tracking-wider">
+          Explore
+        </a>
+      </div>
+
       {/* Animated Background Elements - Smaller on Mobile */}
       <div className="absolute top-1/4 right-1/4 w-[200px] sm:w-[400px] lg:w-[500px] h-[200px] sm:h-[400px] lg:h-[500px] bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
       <div className="absolute bottom-1/4 left-1/4 w-[150px] sm:w-[300px] lg:w-[400px] h-[150px] sm:h-[300px] lg:h-[400px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
@@ -14,7 +23,7 @@ const Hero = () => {
           <img
             src={heroImage}
             alt="Prof. Dr. Ali Sajid"
-            className="w-full h-full object-cover object-[75%_center] sm:object-center lg:object-[center_20%] opacity-40 sm:opacity-50 lg:opacity-60 mix-blend-overlay lg:mix-blend-normal"
+            className="w-full h-full object-cover object-[75%_center] sm:object-center lg:object-[center_20%] opacity-30 sm:opacity-50 lg:opacity-60 mix-blend-overlay lg:mix-blend-normal"
           />
           {/* Gradient Masks */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/60 lg:via-primary/80 lg:to-transparent" />
@@ -22,7 +31,7 @@ const Hero = () => {
         </div>
         
         {/* Grid Overlay */}
-        <div className="absolute inset-0 opacity-[0.05] sm:opacity-10" style={{
+        <div className="absolute inset-0 opacity-[0.03] sm:opacity-10" style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
           backgroundSize: '30px 30px'
         }} />

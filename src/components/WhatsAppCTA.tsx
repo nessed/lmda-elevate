@@ -10,10 +10,9 @@ const WhatsAppCTA = () => {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#25D366] hover:bg-[#20BA5A] text-white px-5 py-4 shadow-lift hover:shadow-xl transition-all group"
-      style={{ borderRadius: 0 }}
+      className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BA5A] text-white p-4 sm:px-5 sm:py-4 rounded-full sm:rounded-none shadow-xl hover:shadow-2xl transition-all group active:scale-95"
     >
-      <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+      <MessageCircle className="w-7 h-7 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
       <div className="hidden md:block">
         <div className="text-xs font-medium opacity-90">Ask About Next Workshop</div>
         <div className="text-sm font-bold">0310 3336485</div>

@@ -13,7 +13,7 @@ const TrustBar = () => {
   ];
 
   return (
-    <section className="py-12 bg-secondary border-y border-border">
+    <section className="hidden sm:block py-12 bg-secondary border-y border-border">
       <div className="container-wide">
         <div className="flex flex-col items-center gap-8">
           <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest text-center">
