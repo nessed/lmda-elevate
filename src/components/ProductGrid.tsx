@@ -113,7 +113,7 @@ const ProductGrid = () => {
               return (
                 <div
                   key={workshop.id}
-                  className="flex-shrink-0 w-[280px] sm:w-auto snap-start group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col"
+                  className="flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-300 flex flex-col border border-white/50"
                 >
                   {/* Image Section - 4:5 Ratio */}
                   <div 
@@ -161,9 +161,9 @@ const ProductGrid = () => {
                   <div className="p-4 sm:p-5 flex flex-col flex-grow">
                     <div className="flex gap-3 sm:gap-4 mb-3 sm:mb-4">
                       {/* Date Box */}
-                      <div className="flex-shrink-0 flex flex-col items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-primary/5 rounded-lg border border-primary/10">
-                        <span className="text-[10px] sm:text-xs font-bold text-accent uppercase">{month}</span>
-                        <span className="text-lg sm:text-xl font-serif font-bold text-primary">{day}</span>
+                      <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary via-primary to-slate-800 text-white rounded-2xl shadow-lg shadow-primary/20">
+                        <span className="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-widest">{month}</span>
+                        <span className="text-xl sm:text-2xl font-serif font-bold leading-none mt-0.5">{day}</span>
                       </div>
                       
                       {/* Title & Time */}
@@ -192,10 +192,10 @@ const ProductGrid = () => {
                         href={`https://wa.me/923103336485?text=${whatsappMessage}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 bg-[#25D366] text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg hover:bg-[#20BD5A] active:scale-95 transition-all duration-200 text-xs sm:text-sm font-bold shadow-md hover:shadow-lg flex-shrink-0"
+                        className="flex items-center gap-2 bg-gradient-to-r from-primary to-slate-800 text-white px-6 py-3 rounded-xl hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-bold shadow-lg shadow-primary/20 flex-shrink-0"
                       >
-                        <MessageCircle className="w-4 h-4" />
                         <span className="hidden xs:inline">Register</span>
+                        <ArrowRight className="w-4 h-4" />
                       </a>
                     </div>
                   </div>

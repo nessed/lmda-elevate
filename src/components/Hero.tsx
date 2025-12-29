@@ -27,7 +27,7 @@ const Hero = () => {
           />
           {/* Gradient Masks */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/60 lg:via-primary/80 lg:to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-transparent sm:to-transparent" />
         </div>
         
         {/* Grid Overlay */}
@@ -53,9 +53,9 @@ const Hero = () => {
           </div>
 
           {/* Main Headline - Mobile Optimized */}
-          <h1 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] text-white mb-4 sm:mb-6 font-bold drop-shadow-2xl">
+           <h1 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] sm:leading-[1.05] text-white mb-4 sm:mb-6 font-bold drop-shadow-2xl">
             Pakistan's Premier 
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-yellow-400 to-accent">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-yellow-200 to-accent animate-pulse-slow">
               Sales & Leadership
             </span>
             Training Ecosystem
@@ -73,8 +73,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
             <a
               href="#programs"
-              className="group inline-flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-5 bg-accent text-primary font-bold hover:bg-white hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 active:scale-95"
-              style={{ borderRadius: 0 }}
+              className="group inline-flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-accent to-yellow-500 text-primary font-bold hover:bg-white hover:text-primary transition-all duration-300 active:scale-95 shadow-lg shadow-accent/20 rounded-lg sm:rounded-none"
             >
               <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
               View Workshops
