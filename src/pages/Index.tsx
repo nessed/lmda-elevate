@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import ProductGrid from "@/components/ProductGrid";
 import Trainers from "@/components/Trainers";
+import CorporateBanner from "@/components/CorporateBanner";
 import Achievements from "@/components/Achievements";
 import Footer from "@/components/Footer";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
@@ -36,6 +37,7 @@ const Index = () => {
           <Hero />
           <TrustBar />
           <ProductGrid />
+          <CorporateBanner />
           <Trainers />
           <Achievements />
         </main>

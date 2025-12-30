@@ -33,15 +33,21 @@ const content = {
     landline: "042 35111184",
     email: "info@lmda.pk",
     address: "327, Block No. 02, Sector C1, Township, Lahore",
-    copyright: "© 2026 Leadership and Management Development Associates (LMDA)"
+    copyright: "© 2026 Leadership and Management Development Associates (LMDA)",
+    socials: {
+      youtube: "https://www.youtube.com/channel/UCL2--Q8WKieUyBDdp4C_w-Q",
+      instagram: "https://www.instagram.com/lmda.pk/",
+      facebook: "https://www.facebook.com/lmdapk/"
+    }
   },
   navigation: [
     { label: "Home", href: "#home" },
-    { label: "About Us", href: "#about" },
-    { label: "Our Process", href: "#process" },
-    { label: "Trainers", href: "#trainers" },
-    { label: "Achievements", href: "#achievements" },
-    { label: "Contact Us", href: "#contact" }
+    { label: "About", href: "#about" },
+    { label: "Workshops", href: "#programs" },
+    { label: "Calendar", href: "/calendar" },
+    { label: "Consultancy", href: "/consultancy" },
+    { label: "Connect", href: "/connect" },
+    { label: "Contact", href: "#contact" }
   ],
   services: [
     "Organization Development",

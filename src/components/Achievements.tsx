@@ -1,140 +1,273 @@
+import { useState, useRef } from "react";
 import leadershipCamp1 from "@/assets/lmda/1766913795323_leadership camp.png";
 import leadershipCamp2 from "@/assets/lmda/1766913791083_dynamic professional.png";
 import workshop1 from "@/assets/lmda/1766913733562_one.png";
 import workshop2 from "@/assets/lmda/1766913752284_four.png";
 import workshop3 from "@/assets/lmda/1766913760550_five.png";
 import workshop4 from "@/assets/lmda/1766913771732_six.png";
-import { Eye, Users, Award, Building } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Users, Clock, Building2, Award } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Gallery Data
+const cases = [
+  {
+    image: leadershipCamp1,
+    tag: "Government",
+    caption: "Punjab Police College, Sihala",
+    title: "Leading with Empathy",
+    date: "Dec 2024",
+  },
+  {
+    image: workshop1,
+    tag: "Executive",
+    caption: "PPMI Complex, Islamabad",
+    title: "AI for Excellence",
+    date: "Nov 2024",
+  },
+  {
+    image: workshop2,
+    tag: "Corporate",
+    caption: "TEVTA Bahawalpur",
+    title: "Conflict Resolution",
+    date: "Oct 2024",
+  },
+  {
+    image: leadershipCamp2,
+    tag: "Summit",
+    caption: "Lahore Training Center",
+    title: "Sales KPI Analysis",
+    date: "Sep 2024",
+  },
+  {
+    image: workshop3,
+    tag: "Engineering",
+    caption: "Engineering Academy",
+    title: "NLP Communication",
+    date: "Aug 2024",
+  },
+  {
+    image: workshop4,
+    tag: "Banking",
+    caption: "Allied Bank HQ, Karachi",
+    title: "Strategic Leadership",
+    date: "Jul 2024",
+  },
+];
+
+const stats = [
+  { icon: Users, value: "10,000+", label: "Professionals Trained" },
+  { icon: Clock, value: "28+", label: "Years Experience" },
+  { icon: Building2, value: "50+", label: "Organizations" },
+  { icon: Award, value: "Govt & Corporate", label: "Clients" },
+];
 
 const Achievements = () => {
-  const cases = [
-    {
-      image: leadershipCamp1,
-      tag: "150+ Officials",
-      caption: "Punjab Police College, Sihala",
-      title: "Leading with Empathy",
-      icon: Users,
-    },
-    {
-      image: workshop1,
-      tag: "50+ Executives",
-      caption: "PPMI Complex, Islamabad",
-      title: "AI for Excellence",
-      icon: Award,
-    },
-    {
-      image: workshop2,
-      tag: "100% Satisfaction",
-      caption: "TEVTA Bahawalpur",
-      title: "Conflict Resolution",
-      icon: Award,
-    },
-    {
-      image: leadershipCamp2,
-      tag: "Corporate Summit",
-      caption: "Lahore Training Center",
-      title: "Sales KPI Analysis",
-      icon: Building,
-    },
-    {
-      image: workshop3,
-      tag: "Govt. Sector",
-      caption: "Engineering Academy",
-      title: "NLP Communication",
-      icon: Building,
-    },
-    {
-      image: workshop4,
-      tag: "Allied Bank",
-      caption: "Karachi Head Office",
-      title: "Strategic Leadership",
-      icon: Building,
-    },
-  ];
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(2);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev < cases.length - 1 ? prev + 1 : prev));
+  };
 
   return (
-    <section id="gallery" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-slate-100 via-white to-slate-50 relative overflow-hidden">
-      {/* Ambient Background */}
-      <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl -translate-y-1/2 animate-pulse" style={{ animationDuration: '4s' }} />
-      <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+    <section id="gallery" className="py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
       
-      <div className="container-wide relative z-10">
-        {/* Section Header - Compact on Mobile */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-12 gap-4 sm:gap-8 bg-gradient-to-r from-primary via-primary to-primary/95 p-5 sm:p-10 shadow-2xl relative overflow-hidden group mx-4 sm:mx-0 rounded-2xl sm:rounded-none">
-          {/* Animated Accent */}
-          <div className="absolute right-0 top-0 w-96 h-full bg-gradient-to-l from-accent/10 to-transparent transform skew-x-12 group-hover:translate-x-8 transition-transform duration-1000" />
-          <div className="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
-          
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3">
-              <Eye className="w-4 h-4 text-accent animate-pulse" />
-              <span className="text-accent font-mono text-sm tracking-widest uppercase">
-                Case Study Archive
-              </span>
-            </div>
-            <h2 className="heading-serif text-3xl md:text-5xl text-white font-bold leading-tight">
-              Field Intelligence:
-              <br />
-              <span className="text-accent">Training in Action</span>
-            </h2>
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button 
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <motion.img 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              src={selectedImage} 
+              alt="Gallery Preview" 
+              className="max-w-full max-h-[90vh] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="container-wide relative z-10 px-4 sm:px-6">
+        
+        {/* Minimal Header */}
+        <div className="mb-16 lg:mb-20 max-w-2xl">
+          <p className="text-accent font-semibold text-sm tracking-widest uppercase mb-4">
+            Training Archive
+          </p>
+          <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl font-bold text-primary leading-tight">
+            Organizations We've Transformed
+          </h2>
+        </div>
+
+        {/* Desktop Gallery - Center Dominant */}
+        <div className="hidden lg:block relative h-[560px] w-full max-w-6xl mx-auto">
+          <div className="absolute inset-0 flex items-center justify-center">
+            {cases.map((item, index) => {
+              const isActive = index === activeIndex;
+              const offset = index - activeIndex;
+              
+              if (Math.abs(offset) > 2) return null;
+
+              return (
+                <motion.div
+                  key={index}
+                  className={`absolute top-1/2 left-1/2 w-[620px] aspect-[4/3] rounded-xl overflow-hidden cursor-pointer ${
+                    isActive 
+                      ? "z-30 ring-4 ring-accent/30 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.5)]" 
+                      : "z-10"
+                  }`}
+                  initial={false}
+                  animate={{
+                    x: offset * 520 - 310,
+                    y: "-50%",
+                    scale: isActive ? 1.08 : 0.75,
+                    opacity: isActive ? 1 : 0.25,
+                    filter: isActive ? "blur(0px) brightness(1)" : "blur(6px) brightness(0.6)",
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 20
+                  }}
+                  onClick={() => {
+                    if (isActive) setSelectedImage(item.image);
+                    else setActiveIndex(index);
+                  }}
+                >
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  
+                  {/* Tag - Only on Active */}
+                  {isActive && (
+                    <div className="absolute top-5 left-5">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-sm">
+                        {item.tag}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Bottom Overlay - Only on Active */}
+                  {isActive && (
+                    <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                      <h3 className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                        {item.title}
+                      </h3>
+                      <div className="flex items-center gap-3 text-white/70 text-sm">
+                        <span>{item.caption}</span>
+                        <span className="w-1 h-1 rounded-full bg-white/40" />
+                        <span>{item.date}</span>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
-          
-          <div className="relative z-10 flex gap-8">
-            <div className="text-center lg:text-right">
-              <span className="block text-4xl font-bold text-accent">10,000+</span>
-              <span className="text-xs text-white/70 uppercase tracking-wider">Professionals</span>
+
+          {/* Navigation - Minimal */}
+          <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-10 z-40">
+            <button 
+              onClick={handlePrev}
+              disabled={activeIndex === 0}
+              className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Previous</span>
+            </button>
+            
+            <div className="flex items-center gap-1 text-sm font-medium text-primary">
+              <span className="text-accent">{String(activeIndex + 1).padStart(2, '0')}</span>
+              <span className="text-slate-400">/</span>
+              <span className="text-slate-400">{String(cases.length).padStart(2, '0')}</span>
             </div>
-            <div className="text-center lg:text-right">
-              <span className="block text-4xl font-bold text-accent">28+</span>
-              <span className="text-xs text-white/70 uppercase tracking-wider">Years</span>
-            </div>
+
+            <button 
+              onClick={handleNext}
+              disabled={activeIndex === cases.length - 1}
+              className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <span className="hidden sm:inline">Next</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        {/* Gallery Carousel (Mobile) / Grid (Desktop) */}
-        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-2 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-0 -mx-4 sm:mx-0 hide-scrollbar">
-          {cases.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={index}
-                className="flex-shrink-0 w-[75vw] sm:w-auto snap-center sm:snap-start group relative aspect-[3/2] overflow-hidden bg-primary cursor-pointer transform hover:scale-[1.02] transition-all duration-500 rounded-xl sm:rounded-none"
+        {/* Mobile Gallery */}
+        <div className="lg:hidden">
+          <div 
+             ref={scrollContainerRef}
+             className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 -mx-4 px-4"
+          >
+            {cases.map((item, index) => (
+              <div 
+                key={index} 
+                className="flex-shrink-0 w-[80vw] snap-center relative aspect-[4/3] rounded-lg overflow-hidden shadow-lg"
+                onClick={() => setSelectedImage(item.image)}
               >
-                {/* Image with Zoom Effect */}
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out"
-                />
-
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500" />
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                 
-                {/* Hover Shine Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  {/* Outcome Tag */}
-                  <div className="inline-flex items-center gap-1.5 bg-accent text-primary text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 mb-3 shadow-lg">
-                    <Icon className="w-3 h-3" />
+                <div className="absolute top-4 left-4">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/90 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-sm">
                     {item.tag}
-                  </div>
-                  
-                  <h3 className="text-white font-bold text-lg leading-tight mb-1 drop-shadow-lg">
-                    {item.title}
-                  </h3>
-                  <p className="text-white/80 text-xs font-mono uppercase tracking-wide">
-                    📍 {item.caption}
-                  </p>
+                  </span>
                 </div>
 
-                {/* Corner Accent */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-accent/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/80 to-transparent">
+                  <h3 className="text-xl font-bold text-white mb-0.5">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    {item.caption}
+                  </p>
+                </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          <div className="flex justify-center gap-1.5 mt-4">
+            {cases.map((_, i) => (
+              <div key={i} className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+            ))}
+          </div>
         </div>
+
+        {/* Credibility Strip */}
+        <div className="mt-24 lg:mt-32 pt-8 border-t border-slate-200">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div key={index} className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xl lg:text-2xl font-bold text-primary">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
     </section>
   );

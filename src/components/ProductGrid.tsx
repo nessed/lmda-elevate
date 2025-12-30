@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { ArrowRight, Clock, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import zoomImage from "@/assets/zoomimagess.png";
-
-gsap.registerPlugin(ScrollTrigger);
+import fallbackData from "@/data/fallbackWorkshops.json";
+import { siteConfig, getWorkshopRegistrationLink } from "@/data/siteConfig";
 
 interface Workshop {
   id: string;
@@ -32,96 +31,69 @@ const getPrice = (type: Workshop["type"], price: number | null) => {
   return price ? `PKR ${price.toLocaleString()}` : "FREE";
 };
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+};
+
 const ProductGrid = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [loading, setLoading] = useState(true);
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
-  const zoomRef = useRef<HTMLDivElement>(null);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const fetchWorkshops = async () => {
-      const { data, error } = await supabase
-        .from("workshops")
-        .select("id, title, type, price, flyer_url, date_time, cpd_points, trainer_name")
-        .eq("is_active", true)
-        .gte("date_time", new Date().toISOString())
-        .order("date_time", { ascending: true });
+      try {
+        const { data, error } = await supabase
+          .from("workshops")
+          .select("id, title, type, price, flyer_url, date_time, cpd_points, trainer_name")
+          .eq("is_active", true)
+          .gte("date_time", new Date().toISOString())
+          .order("date_time", { ascending: true });
 
-      if (!error && data) {
-        setWorkshops(data as Workshop[]);
+        if (error) {
+          console.warn("Supabase error, using fallback data:", error.message);
+          setWorkshops(fallbackData.workshops as Workshop[]);
+        } else if (data && data.length > 0) {
+          setWorkshops(data as Workshop[]);
+        } else {
+          // No upcoming workshops, show fallback evergreen content
+          setWorkshops(fallbackData.workshops as Workshop[]);
+        }
+      } catch (err) {
+        console.warn("Network error, using fallback data:", err);
+        setWorkshops(fallbackData.workshops as Workshop[]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchWorkshops();
   }, []);
 
-  // GSAP animations
-  useEffect(() => {
-    if (loading) return;
-
-    const ctx = gsap.context(() => {
-      // Header fade-in
-      if (headerRef.current) {
-        gsap.from(headerRef.current, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headerRef.current,
-            start: "top 85%",
-          },
-        });
-      }
-
-      // Workshop cards clip-path reveal
-      if (cardsContainerRef.current) {
-        const cards = cardsContainerRef.current.querySelectorAll('.workshop-card');
-        cards.forEach((card, index) => {
-          gsap.fromTo(card, 
-            { 
-              clipPath: "inset(100% 0 0 0)",
-              opacity: 0,
-            },
-            {
-              clipPath: "inset(0% 0 0 0)",
-              opacity: 1,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 85%",
-              },
-              delay: index * 0.1,
-            }
-          );
-        });
-      }
-
-      // Zoom section fade-in
-      if (zoomRef.current) {
-        gsap.from(zoomRef.current, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: zoomRef.current,
-            start: "top 90%",
-          },
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [loading, workshops]);
+  const handleImageError = (workshopId: string) => {
+    setImageErrors(prev => new Set(prev).add(workshopId));
+  };
 
   return (
-    <section ref={sectionRef} id="programs" className="py-10 sm:py-16 lg:py-24 bg-slate-50 relative overflow-hidden">
+    <section id="programs" className="py-10 sm:py-16 lg:py-24 bg-slate-50 relative overflow-hidden">
       {/* Lightbox Modal */}
       {selectedImage && (
         <div 
@@ -150,12 +122,18 @@ const ProductGrid = () => {
       
       <div className="container-wide relative z-10">
         {/* Section Header */}
-        <div ref={headerRef} className="px-5 sm:px-6 mb-6 sm:mb-10">
+        <motion.div 
+          className="px-5 sm:px-6 mb-6 sm:mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Explore Programs</p>
           <h2 className="heading-serif text-2xl sm:text-4xl lg:text-5xl text-primary font-bold">
             Upcoming Sessions
           </h2>
-        </div>
+        </motion.div>
 
         {/* Workshop Grid */}
         {loading ? (
@@ -168,9 +146,12 @@ const ProductGrid = () => {
             <p className="text-sm mt-2">Check back soon for new sessions!</p>
           </div>
         ) : (
-          <div 
-            ref={cardsContainerRef}
+          <motion.div 
             className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 px-4 sm:px-6 -mx-4 sm:mx-0 scroll-smooth hide-scrollbar"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
           >
             {workshops.map((workshop) => {
               const priceLabel = getPrice(workshop.type, workshop.price);
@@ -178,13 +159,16 @@ const ProductGrid = () => {
               const month = format(dateObj, "MMM");
               const day = format(dateObj, "dd");
               const time = format(dateObj, "hh:mm a");
-              const hasFlyer = workshop.flyer_url && !workshop.flyer_url.startsWith('bg-');
-              const whatsappMessage = encodeURIComponent(`Hi, I want to register for ${workshop.title} on ${format(dateObj, 'MMM dd')}.`);
+              const hasFlyer = workshop.flyer_url && !workshop.flyer_url.startsWith('bg-') && !imageErrors.has(workshop.id);
+              const registrationLink = getWorkshopRegistrationLink(workshop.title, format(dateObj, 'MMM dd'));
 
               return (
-                <div
+                <motion.div
                   key={workshop.id}
-                  className="workshop-card flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-shadow duration-300 flex flex-col border border-white/50 will-change-transform"
+                  className="flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-shadow duration-300 flex flex-col border border-white/50"
+                  variants={cardVariants}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
                 >
                   {/* Image Section */}
                   <div 
@@ -200,7 +184,9 @@ const ProductGrid = () => {
                         <img
                           src={workshop.flyer_url!}
                           alt={workshop.title}
+                          loading="lazy"
                           className="relative w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                          onError={() => handleImageError(workshop.id)}
                         />
                       </>
                     ) : (
@@ -255,7 +241,7 @@ const ProductGrid = () => {
                       </div>
 
                       <a
-                        href={`https://wa.me/923103336485?text=${whatsappMessage}`}
+                        href={registrationLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="shimmer-gold flex items-center gap-2 bg-gradient-to-r from-primary to-slate-800 text-white px-6 py-3 rounded-xl hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-bold shadow-lg shadow-primary/20 flex-shrink-0"
@@ -265,16 +251,19 @@ const ProductGrid = () => {
                       </a>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         )}
 
         {/* Zoom Infrastructure */}
-        <div 
-          ref={zoomRef}
+        <motion.div 
           className="mt-12 sm:mt-16 lg:mt-20 pt-8 sm:pt-10 border-t border-border/40"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 opacity-80">
             <img src={zoomImage} alt="Zoom" className="h-8 sm:h-10 w-auto grayscale" />
@@ -282,7 +271,7 @@ const ProductGrid = () => {
               <span className="text-primary font-bold">Seamless Digital Delivery.</span> All sessions on Zoom Pro HD with cloud recording.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

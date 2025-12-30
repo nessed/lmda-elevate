@@ -16,7 +16,7 @@ const Consultancy = () => {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        <Header />
+        <Header variant="solid" />
         <main className="pt-20">
           {/* Hero Section for Consultancy */}
           <section className="py-24 bg-primary text-primary-foreground">

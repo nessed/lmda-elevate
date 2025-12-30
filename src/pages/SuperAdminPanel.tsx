@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, UserPlus, Trash2, Shield, Edit2 } from 'lucide-react';
+import { ArrowLeft, UserPlus, Trash2, Shield, Edit2, Download } from 'lucide-react';
 import { z } from 'zod';
 import lmdaLogo from '@/assets/lmda-logo.png';
 
@@ -27,6 +27,60 @@ const SuperAdminPanel = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isExporting, setIsExporting] = useState(false);
+
+  // Export database backup as JSON
+  const exportDatabaseBackup = async () => {
+    setIsExporting(true);
+    try {
+      // Fetch all tables
+      const [workshopsRes, profilesRes, rolesRes] = await Promise.all([
+        supabase.from('workshops').select('*'),
+        supabase.from('profiles').select('*'),
+        supabase.from('user_roles').select('*'),
+      ]);
+
+      if (workshopsRes.error) throw workshopsRes.error;
+      if (profilesRes.error) throw profilesRes.error;
+      if (rolesRes.error) throw rolesRes.error;
+
+      const backup = {
+        exportedAt: new Date().toISOString(),
+        exportedBy: user?.email,
+        version: '1.0',
+        data: {
+          workshops: workshopsRes.data || [],
+          profiles: profilesRes.data || [],
+          user_roles: rolesRes.data || [],
+        },
+      };
+
+      // Create and download file
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `lmda-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: 'Backup Downloaded',
+        description: 'Database backup saved successfully.',
+      });
+    } catch (err) {
+      console.error('Error exporting backup:', err);
+      toast({
+        title: 'Export Failed',
+        description: 'Could not export database. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -203,7 +257,19 @@ const SuperAdminPanel = () => {
               <p className="text-sm text-primary-foreground/60">Assign roles to team members</p>
             </div>
           </div>
-          <span className="badge-gold text-xs">Super Admin</span>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportDatabaseBackup}
+              disabled={isExporting}
+              className="border-primary-foreground/20 text-primary-foreground/80 hover:bg-primary-foreground/10"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              {isExporting ? 'Exporting...' : 'Export Backup'}
+            </Button>
+            <span className="badge-gold text-xs">Super Admin</span>
+          </div>
         </div>
       </header>
 

@@ -2,6 +2,7 @@ import { Phone, Mail, MapPin, ArrowRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import content from "@/data/content";
 import lmdaLogo from "@/assets/lmda-logo.png";
+import { getWhatsAppLink } from "@/data/siteConfig";
 
 const Footer = () => {
   return (
@@ -80,7 +81,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://wa.me/923103336485"
+                  href={getWhatsAppLink()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-background/50 hover:text-[#25D366] transition-colors py-1"

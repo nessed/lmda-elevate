@@ -1,15 +1,26 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
 
 const Trainers = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
-
   const facilitators = [
     {
       name: "Prof. Dr. Ali Sajid",
@@ -53,124 +64,61 @@ const Trainers = () => {
     },
   ];
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Header badge fade-in
-      if (headerRef.current) {
-        const badge = headerRef.current.querySelector('.header-badge');
-        const subtitle = headerRef.current.querySelector('.header-subtitle');
-        
-        gsap.from(badge, {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headerRef.current,
-            start: "top 85%",
-          },
-        });
-
-        gsap.from(subtitle, {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          delay: 0.3,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headerRef.current,
-            start: "top 85%",
-          },
-        });
-      }
-
-      // Text scrubbing - word by word fade in
-      if (headlineRef.current) {
-        const words = headlineRef.current.querySelectorAll('.scrub-word');
-        
-        gsap.from(words, {
-          opacity: 0.1,
-          y: 10,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: headlineRef.current,
-            start: "top 80%",
-            end: "top 50%",
-            scrub: 1,
-          },
-        });
-      }
-
-      // Trainer cards stagger
-      if (cardsContainerRef.current) {
-        const cards = cardsContainerRef.current.querySelectorAll('.trainer-card');
-        
-        gsap.from(cards, {
-          y: 50,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: cardsContainerRef.current,
-            start: "top 80%",
-          },
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // Split headline into words for text scrubbing
-  const headline = "Learn from Pakistan's Top Minds";
-  const headlineWords = headline.split(' ');
-
   return (
-    <section ref={sectionRef} id="facilitators" className="py-12 sm:py-16 lg:py-24 bg-secondary">
-      <div className="container-wide px-4 sm:px-6">
+    <section id="facilitators" className="py-24 sm:py-32 bg-primary relative overflow-hidden">
+      {/* Top Divider (Wave from Slate-50) */}
+      <div className="absolute top-0 left-0 right-0 w-full overflow-hidden leading-none rotate-180">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-16 sm:h-24 fill-slate-50">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+        </svg>
+      </div>
+
+      <div className="container-wide px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16">
-          <div className="header-badge flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-            <div className="w-8 sm:w-12 h-px bg-accent" />
+        <motion.div 
+          className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 lg:mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
+            <div className="w-8 sm:w-12 h-px bg-accent/60" />
             <span className="text-xs sm:text-sm font-medium text-accent uppercase tracking-widest">
               Elite Facilitators
             </span>
-            <div className="w-8 sm:w-12 h-px bg-accent" />
+            <div className="w-8 sm:w-12 h-px bg-accent/60" />
           </div>
-          <h2 
-            ref={headlineRef}
-            className="heading-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-primary mb-3 sm:mb-4 font-bold"
-          >
-            {headlineWords.map((word, index) => (
-              <span key={index} className="scrub-word inline-block mr-2 sm:mr-3">
-                {word}
-              </span>
-            ))}
+          <h2 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6 font-bold">
+            Learn from Pakistan's <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-200">Top Minds</span>
           </h2>
-          <p className="header-subtitle text-sm sm:text-base lg:text-lg text-muted-foreground font-medium px-4">
+          <p className="text-base sm:text-lg lg:text-xl text-slate-300 font-medium px-4 leading-relaxed">
             A Retired Brigadier. A Former Ambassador. A Presidential Award Winner.
           </p>
-        </div>
+        </motion.div>
 
         {/* Facilitator Carousel (Mobile) / Grid (Desktop) */}
-        <div 
-          ref={cardsContainerRef}
-          className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 px-4 md:px-0 -mx-4 md:mx-0 hide-scrollbar"
+        <motion.div 
+          className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 px-4 md:px-0 -mx-4 md:mx-0 hide-scrollbar"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
         >
           {facilitators.map((facilitator, index) => {
             const hasImage = facilitator.image && index === 0;
             
             return (
-              <div
+              <motion.div
                 key={index}
-                className="trainer-card flex-shrink-0 w-[80vw] md:w-auto snap-center md:snap-start bg-white border border-border hover:border-accent transition-all group overflow-hidden rounded-2xl md:rounded-none will-change-transform"
+                className="flex-shrink-0 w-[85vw] md:w-auto snap-center md:snap-start bg-white/5 backdrop-blur-sm border border-white/10 hover:border-accent/50 transition-all group overflow-hidden rounded-3xl"
+                variants={cardVariants}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
               >
                 {/* Image for Prof. Dr. Ali Sajid */}
                 {hasImage && (
-                  <div className="aspect-square bg-secondary flex items-center justify-center overflow-hidden">
+                  <div className="aspect-square bg-white/5 flex items-center justify-center overflow-hidden">
                     <img
                       src={facilitator.image}
                       alt={facilitator.name}
@@ -180,42 +128,49 @@ const Trainers = () => {
                 )}
 
                 {/* Content */}
-                <div className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-1 sm:mb-2">
+                <div className="p-6 sm:p-8">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
                     {facilitator.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-accent font-semibold mb-2 sm:mb-3">
+                  <p className="text-sm text-accent font-semibold mb-4 tracking-wide">
                     {facilitator.credentials}
                   </p>
 
                   {/* Highlight Badge */}
                   {facilitator.highlight && (
-                    <div className="inline-block bg-accent px-2 sm:px-3 py-0.5 sm:py-1 mb-3 sm:mb-4 rounded">
-                      <p className="text-[10px] sm:text-xs font-bold text-primary uppercase tracking-wide">
+                    <div className="inline-block bg-accent/20 border border-accent/30 px-3 py-1 mb-5 rounded-full">
+                      <p className="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-wide">
                         {facilitator.highlight}
                       </p>
                     </div>
                   )}
 
                   {/* Mastery Tag */}
-                  <div className="bg-primary/5 border-l-2 sm:border-l-4 border-primary px-3 sm:px-4 py-2 sm:py-3 mb-3 sm:mb-4 rounded-r-lg">
-                    <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5 sm:mb-1">
+                  <div className="bg-white/5 border-l-2 border-accent px-4 py-3 mb-5 rounded-r-lg">
+                    <p className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
                       Mastery
                     </p>
-                    <p className="text-xs sm:text-sm font-bold text-primary">
+                    <p className="text-sm font-bold text-slate-100">
                       {facilitator.mastery}
                     </p>
                   </div>
 
                   {/* Bio */}
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                  <p className="text-sm text-slate-400 leading-relaxed line-clamp-3">
                     {facilitator.bio}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
+      </div>
+
+      {/* Bottom Divider (Wave to Slate-100) */}
+      <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-16 sm:h-24 fill-slate-100">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+        </svg>
       </div>
     </section>
   );

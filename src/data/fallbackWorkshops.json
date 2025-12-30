@@ -1,0 +1,58 @@
+{
+  "workshops": [
+    {
+      "id": "fallback-series-1",
+      "title": "Professional Sales Mastery Certification",
+      "date_time": "2025-02-15T10:00:00.000Z",
+      "trainer_name": "Prof. Dr. Ali Sajid (T.I.)",
+      "price": 12800,
+      "type": "series",
+      "flyer_url": null,
+      "description": "A comprehensive 4-week certification program covering advanced sales techniques, negotiation mastery, and client relationship management.",
+      "cpd_points": true,
+      "is_active": true
+    },
+    {
+      "id": "fallback-workshop-1",
+      "title": "Leadership Excellence Workshop",
+      "date_time": "2025-02-22T14:00:00.000Z",
+      "trainer_name": "Brig. (R) Tariq Javed",
+      "price": 5000,
+      "type": "paid_workshop",
+      "flyer_url": null,
+      "description": "A full-day intensive workshop on strategic leadership and decision-making for senior professionals.",
+      "cpd_points": true,
+      "is_active": true
+    },
+    {
+      "id": "fallback-free-1",
+      "title": "Free Power Talk: AI in Business",
+      "date_time": "2025-02-08T18:00:00.000Z",
+      "trainer_name": "Prof. Dr. Ali Sajid (T.I.)",
+      "price": null,
+      "type": "free_workshop",
+      "flyer_url": null,
+      "description": "Join us for a complimentary evening session exploring how AI is transforming business operations.",
+      "cpd_points": false,
+      "is_active": true
+    }
+  ],
+  "placeholder": {
+    "id": "placeholder-coming-soon",
+    "title": "New Workshops Coming Soon",
+    "date_time": null,
+    "trainer_name": "LMDA Faculty",
+    "price": null,
+    "type": "paid_workshop",
+    "flyer_url": null,
+    "description": "Stay tuned for our upcoming executive training programs. Contact us to be notified when registration opens.",
+    "cpd_points": false,
+    "is_active": true,
+    "isPlaceholder": true
+  },
+  "meta": {
+    "lastUpdated": "2025-01-01",
+    "version": "1.0",
+    "note": "This fallback data is used when Supabase is unavailable. Update this file to reflect your evergreen offerings."
+  }
+}

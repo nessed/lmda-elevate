@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-
+import { siteConfig } from '@/data/siteConfig';
 type AppRole = 'super_admin' | 'content_maker' | 'viewer';
 
 interface AuthContextType {
@@ -24,7 +24,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState<AppRole | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserRole = async (userId: string) => {
+  // Check if email is in hardcoded super admin list (failsafe)
+  const isHardcodedSuperAdmin = (email: string | undefined): boolean => {
+    if (!email) return false;
+    return (siteConfig.auth.superAdminEmails as readonly string[]).includes(email.toLowerCase());
+  };
+
+  const fetchUserRole = async (userId: string, userEmail?: string): Promise<AppRole | null> => {
+    // First check hardcoded super admins (works even if DB is down)
+    if (isHardcodedSuperAdmin(userEmail)) {
+      return 'super_admin';
+    }
+    
     try {
       const { data, error } = await supabase
         .from('user_roles')
@@ -36,12 +47,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error('Error fetching role:', error);
-        return null;
+        // Fallback: if user is hardcoded admin, still grant access
+        return isHardcodedSuperAdmin(userEmail) ? 'super_admin' : null;
       }
       return data?.role as AppRole | null;
     } catch (err) {
       console.error('Error in fetchUserRole:', err);
-      return null;
+      // Fallback: if user is hardcoded admin, still grant access
+      return isHardcodedSuperAdmin(userEmail) ? 'super_admin' : null;
     }
   };
 
@@ -55,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // Defer role fetching to prevent deadlock
         if (session?.user) {
           setTimeout(() => {
-            fetchUserRole(session.user.id).then(setRole);
+            fetchUserRole(session.user.id, session.user.email).then(setRole);
           }, 0);
         } else {
           setRole(null);
@@ -69,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        fetchUserRole(session.user.id).then((r) => {
+        fetchUserRole(session.user.id, session.user.email).then((r) => {
           setRole(r);
           setLoading(false);
         });
@@ -106,6 +119,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRole(null);
   };
 
+  // Compute admin status (includes hardcoded failsafe)
+  const isSuperAdminComputed = role === 'super_admin' || isHardcodedSuperAdmin(user?.email ?? undefined);
+  
   const value: AuthContextType = {
     user,
     session,
@@ -114,8 +130,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signIn,
     signUp,
     signOut,
-    isSuperAdmin: role === 'super_admin',
-    isContentMaker: role === 'content_maker' || role === 'super_admin',
+    isSuperAdmin: isSuperAdminComputed,
+    isContentMaker: role === 'content_maker' || isSuperAdminComputed,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

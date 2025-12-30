@@ -111,7 +111,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth;  Removed to fix desktop scroll wheel feel */
   }
 
   body {
