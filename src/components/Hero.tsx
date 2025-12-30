@@ -139,13 +139,13 @@ const Hero = () => {
 
           {/* Sub-headline */}
           <motion.p 
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl leading-relaxed mb-8 sm:mb-10 lg:mb-12 font-medium"
+            className="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed mb-8 sm:mb-10 lg:mb-12 font-medium"
             initial="hidden"
             animate="visible"
             custom={2}
             variants={fadeUpVariants}
           >
-            <strong className="text-accent">28+ Years</strong> of excellence in <strong className="text-accent">Sales & Leadership</strong>. <strong className="text-accent">10,000+ Professionals</strong> trained by <strong className="text-accent">Prof. Dr. Ali Sajid (PhD USA, T.I.)</strong>.
+            Master the art of <strong className="text-accent">executive leadership</strong> and high-impact <strong className="text-accent">sales training</strong> with LMDA. For over 28 years, we have provided <strong className="text-accent">professional certifications</strong> and specialized training programs to 10,000+ professionals, lead by presidential award winner <strong className="text-accent">Prof. Dr. Ali Sajid (PhD USA, T.I.)</strong>.
           </motion.p>
 
           {/* CTA Buttons */}

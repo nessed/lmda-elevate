@@ -130,10 +130,17 @@ const ProductGrid = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Explore Programs</p>
-          <h2 className="heading-serif text-2xl sm:text-4xl lg:text-5xl text-primary font-bold">
-            Upcoming Sessions
-          </h2>
+          <div className="mb-12 sm:mb-16">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-px bg-accent" />
+              <span className="text-sm font-bold text-accent uppercase tracking-widest">
+                Live Trainings
+              </span>
+            </div>
+            <h2 className="heading-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
+              Explore Our <span className="text-accent italic">Upcoming Workshops</span>
+            </h2>
+          </div>
         </motion.div>
 
         {/* Workshop Grid */}

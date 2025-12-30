@@ -6,6 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import Trainers from "@/components/Trainers";
 import CorporateBanner from "@/components/CorporateBanner";
 import Achievements from "@/components/Achievements";
+import InstitutionalLegacy from "@/components/InstitutionalLegacy";
 import Footer from "@/components/Footer";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
 
@@ -39,6 +40,21 @@ const Index = () => {
             "alternateName": "Leadership and Management Development Associates",
             "url": "https://lmda.pk",
             "logo": "https://lmda.pk/assets/lmda-logo.webp",
+            "founder": {
+              "@type": "Person",
+              "name": "Prof. Dr. Ali Sajid",
+              "jobTitle": "President & Founder",
+              "honorificPrefix": "Prof. Dr.",
+              "honorificSuffix": "T.I., PhD (USA)"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Township",
+              "addressLocality": "Lahore",
+              "addressRegion": "Punjab",
+              "postalCode": "54000",
+              "addressCountry": "PK"
+            },
             "contactPoint": {
               "@type": "ContactPoint",
               "telephone": "+92-310-3336485",
@@ -59,6 +75,7 @@ const Index = () => {
         <Header />
         <main>
           <Hero />
+          <InstitutionalLegacy />
           <TrustBar />
           <ProductGrid />
           <CorporateBanner />

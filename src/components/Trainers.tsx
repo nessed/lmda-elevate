@@ -91,10 +91,10 @@ const Trainers = () => {
             <div className="w-8 sm:w-12 h-px bg-accent/60" />
           </div>
           <h2 className="heading-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-6 font-bold">
-            Learn from Pakistan's <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-200">Top Minds</span>
+            Elite Facilitators & <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-200">Industry Experts</span>
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-slate-300 font-medium px-4 leading-relaxed">
-            A Retired Brigadier. A Former Ambassador. A Presidential Award Winner.
+            Learn from a Retired Brigadier, a Former Ambassador, and a Presidential Award Winner.
           </p>
         </motion.div>
 
