@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import imgAliSajid from "@/assets/lmda/1766914035711_alisajid.webp";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -26,7 +27,7 @@ const Trainers = () => {
       name: "Prof. Dr. Ali Sajid",
       credentials: "T.I. (Tamgha-e-Imtiaz)",
       mastery: "Inspirational Leadership & Sales Growth",
-      image: "/src/assets/lmda/1766914035711_alisajid.webp",
+      image: imgAliSajid,
       bio: "Presidential Award Winner with 28+ years of transforming organizations across Pakistan and internationally.",
       highlight: "Presidential Award Winner",
     },
