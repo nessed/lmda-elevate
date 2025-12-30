@@ -13,22 +13,46 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>LMDA - Pakistan's Premier Sales & Leadership Training Ecosystem</title>
+        <title>LMDA | Premier Sales & Leadership Training Pakistan</title>
         <meta
           name="description"
-          content="Transform your career with world-class training programs. Free Power Talks, Specialized Workshops, and Professional Certifications led by Prof. Ali Sajid (PhD USA, T.I.)."
+          content="Elevate your career with elite workshops by Prof. Dr. Ali Sajid (PhD USA). Official PEC Partner for Leadership & Sales Training in Pakistan."
         />
         <meta
           name="keywords"
           content="LMDA, sales training, leadership training, professional certification, workshops, Pakistan, Prof Ali Sajid, PEC partner"
         />
-        <meta property="og:title" content="LMDA - Pakistan's Premier Training Ecosystem" />
+        <meta property="og:title" content="LMDA | Premier Sales & Leadership Training" />
         <meta
           property="og:description"
-          content="Free Power Talks, Specialized Workshops, and Professional Certifications for career transformation."
+          content="Elevate your career with elite workshops by Prof. Dr. Ali Sajid (PhD USA). Official PEC Partner."
         />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://lmda.pk" />
+        
+        {/* Structured Data: Organization */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "LMDA",
+            "alternateName": "Leadership and Management Development Associates",
+            "url": "https://lmda.pk",
+            "logo": "https://lmda.pk/assets/lmda-logo.webp",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+92-310-3336485",
+              "contactType": "customer service",
+              "areaServed": "PK",
+              "availableLanguage": ["English", "Urdu"]
+            },
+            "sameAs": [
+              "https://www.facebook.com/lmdapk/",
+              "https://www.instagram.com/lmda.pk/",
+              "https://www.youtube.com/channel/UCL2--Q8WKieUyBDdp4C_w-Q"
+            ]
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-background">

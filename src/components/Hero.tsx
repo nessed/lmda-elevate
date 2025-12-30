@@ -145,10 +145,7 @@ const Hero = () => {
             custom={2}
             variants={fadeUpVariants}
           >
-            <strong className="text-accent">28+ Years.</strong>{" "}
-            <strong className="text-accent">10,000+ Professionals.</strong>{" "}
-            <span className="hidden sm:inline">Led by </span>
-            <strong className="text-accent">Prof. Dr. Ali Sajid (T.I.)</strong>
+            <strong className="text-accent">28+ Years</strong> of excellence in <strong className="text-accent">Sales & Leadership</strong>. <strong className="text-accent">10,000+ Professionals</strong> trained by <strong className="text-accent">Prof. Dr. Ali Sajid (PhD USA, T.I.)</strong>.
           </motion.p>
 
           {/* CTA Buttons */}
