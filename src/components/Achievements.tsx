@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
-import leadershipCamp1 from "@/assets/lmda/1766913795323_leadership camp.png";
-import leadershipCamp2 from "@/assets/lmda/1766913791083_dynamic professional.png";
-import workshop1 from "@/assets/lmda/1766913733562_one.png";
-import workshop2 from "@/assets/lmda/1766913752284_four.png";
-import workshop3 from "@/assets/lmda/1766913760550_five.png";
-import workshop4 from "@/assets/lmda/1766913771732_six.png";
+import leadershipCamp1 from "@/assets/lmda/1766913795323_leadership camp.webp";
+import leadershipCamp2 from "@/assets/lmda/1766913791083_dynamic professional.webp";
+import workshop1 from "@/assets/lmda/1766913733562_one.webp";
+import workshop2 from "@/assets/lmda/1766913752284_four.webp";
+import workshop3 from "@/assets/lmda/1766913760550_five.webp";
+import workshop4 from "@/assets/lmda/1766913771732_six.webp";
 import { ChevronLeft, ChevronRight, X, Users, Clock, Building2, Award } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -88,10 +88,10 @@ const Achievements = () => {
             onClick={() => setSelectedImage(null)}
           >
             <button 
-              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2"
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2.5 bg-white/10 hover:bg-white/20 border border-white/10"
               onClick={() => setSelectedImage(null)}
             >
-              <X className="w-8 h-8" />
+              <X className="w-6 h-6" />
             </button>
             <motion.img 
               initial={{ scale: 0.95, opacity: 0 }}
@@ -140,7 +140,7 @@ const Achievements = () => {
                     y: "-50%",
                     scale: isActive ? 1.08 : 0.75,
                     opacity: isActive ? 1 : 0.25,
-                    filter: isActive ? "blur(0px) brightness(1)" : "blur(6px) brightness(0.6)",
+                    filter: isActive ? "blur(0px) brightness(1)" : "blur(2px) brightness(0.7)",
                   }}
                   transition={{
                     type: "spring",
@@ -153,15 +153,6 @@ const Achievements = () => {
                   }}
                 >
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                  
-                  {/* Tag - Only on Active */}
-                  {isActive && (
-                    <div className="absolute top-5 left-5">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-sm">
-                        {item.tag}
-                      </span>
-                    </div>
-                  )}
 
                   {/* Bottom Overlay - Only on Active */}
                   {isActive && (
@@ -222,12 +213,6 @@ const Achievements = () => {
                 onClick={() => setSelectedImage(item.image)}
               >
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                
-                <div className="absolute top-4 left-4">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/90 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-sm">
-                    {item.tag}
-                  </span>
-                </div>
 
                 <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/80 to-transparent">
                   <h3 className="text-xl font-bold text-white mb-0.5">
@@ -255,7 +240,7 @@ const Achievements = () => {
               const Icon = stat.icon;
               return (
                 <div key={index} className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 border border-accent/20 flex items-center justify-center flex-shrink-0">
                     <Icon className="w-5 h-5 text-accent" />
                   </div>
                   <div>

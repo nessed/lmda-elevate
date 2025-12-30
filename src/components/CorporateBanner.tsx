@@ -24,7 +24,7 @@ const CorporateBanner = () => {
             href={WHATSAPP_CORPORATE_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 min-h-[48px] bg-accent hover:bg-accent/90 text-primary font-bold text-base sm:text-lg rounded-full shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 active:scale-95"
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 min-h-[48px] bg-accent hover:bg-accent/90 text-primary font-bold text-base sm:text-lg shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 active:scale-95"
           >
             <MessageCircle className="w-5 h-5" />
             Get Corporate Quote

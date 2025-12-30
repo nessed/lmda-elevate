@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, UserPlus, Trash2, Shield, Edit2, Download } from 'lucide-react';
 import { z } from 'zod';
-import lmdaLogo from '@/assets/lmda-logo.png';
+import lmdaLogo from '@/assets/lmda-logo.webp';
 
 const emailSchema = z.string().email('Invalid email address').max(255);
 

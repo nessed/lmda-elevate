@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import lmdaLogo from "@/assets/lmda-logo.png";
+import lmdaLogo from "@/assets/lmda-logo.webp";
 
 const LoadingScreen = () => {
   const [isLoading, setIsLoading] = useState(true);

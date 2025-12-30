@@ -201,10 +201,10 @@ const Calendar = () => {
                             {workshop.flyer_url && (
                               <HoverCardContent className="w-80 p-0 border-none shadow-xl" align="start">
                                 <img 
-                                  src={workshop.flyer_url} 
+                                  src={`${workshop.flyer_url}${workshop.flyer_url.includes('supabase.co') ? '?format=webp&width=600&quality=70' : ''}`} 
                                   alt={`Flyer for ${workshop.title}`} 
                                   loading="lazy"
-                                  className="w-full h-auto rounded-lg" 
+                                  className="w-full h-auto rounded-none" 
                                 />
                               </HoverCardContent>
                             )}
@@ -238,19 +238,19 @@ const Calendar = () => {
                           <div className="flex items-center gap-2">
                             <button 
                               onClick={() => downloadIcs(workshop)}
-                              className="p-2 text-muted-foreground hover:text-primary hover:bg-secondary rounded-full transition-colors"
+                              className="p-2.5 text-slate-500 hover:text-primary hover:bg-slate-100 border border-slate-200 transition-colors"
                               title="Download .ics"
                             >
-                              <Download className="w-5 h-5" />
+                              <Download className="w-4 h-4" />
                             </button>
                             <a 
                               href={googleCalendarUrl(workshop)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-2 text-muted-foreground hover:text-primary hover:bg-secondary rounded-full transition-colors"
+                              className="p-2.5 text-slate-500 hover:text-primary hover:bg-slate-100 border border-slate-200 transition-colors"
                               title="Add to Google Calendar"
                             >
-                              <ExternalLink className="w-5 h-5" />
+                              <ExternalLink className="w-4 h-4" />
                             </a>
                             <a 
                               href={getWorkshopRegistrationLink(workshop.title, format(parseISO(workshop.date_time), 'MMM dd'))}

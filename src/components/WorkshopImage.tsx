@@ -33,11 +33,16 @@ const WorkshopImage = ({
     "square": "aspect-square",
   }[aspectRatio];
 
+  // Optimize image URL if it's from Supabase storage
+  const optimizedSrc = src && src.includes("supabase.co/storage/v1/object/public/") 
+    ? `${src}?format=webp&width=600&quality=70`
+    : src;
+
   // If no src or error, show branded placeholder
-  if (!src || hasError) {
+  if (!optimizedSrc || hasError) {
     return (
       <div
-        className={`${aspectClass} bg-gradient-to-br from-primary via-primary to-slate-800 flex flex-col items-center justify-center p-6 text-center ${className}`}
+        className={`${aspectClass} bg-gradient-to-br from-primary via-primary to-slate-800 flex flex-col items-center justify-center p-6 text-center ${className} border border-white/10`}
       >
         {/* LMDA Branding */}
         <div className="mb-4">
@@ -47,7 +52,7 @@ const WorkshopImage = ({
         </div>
 
         {/* Workshop Info */}
-        <div className="space-y-2">
+        <div className="space-y-2 relative z-10">
           <h3 className="text-lg sm:text-xl font-serif font-bold text-white leading-tight line-clamp-2">
             {title}
           </h3>
@@ -59,7 +64,7 @@ const WorkshopImage = ({
           )}
           
           {price !== undefined && price !== null && (
-            <div className="mt-3 inline-block bg-accent px-4 py-1.5 rounded">
+            <div className="mt-3 inline-block bg-accent px-4 py-1.5 shadow-lg">
               <span className="text-sm font-bold text-primary">
                 PKR {price.toLocaleString()}
               </span>
@@ -67,7 +72,7 @@ const WorkshopImage = ({
           )}
           
           {price === null && (
-            <div className="mt-3 inline-block bg-green-500/20 border border-green-500/30 px-4 py-1.5 rounded">
+            <div className="mt-3 inline-block bg-green-500/20 border border-green-500/30 px-4 py-1.5">
               <span className="text-sm font-bold text-green-400">
                 FREE
               </span>
@@ -76,8 +81,8 @@ const WorkshopImage = ({
         </div>
 
         {/* Decorative elements */}
-        <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-          <div className="w-4 h-4 rounded-full bg-accent/40" />
+        <div className="absolute top-4 right-4 w-8 h-8 bg-accent/20 flex items-center justify-center">
+          <div className="w-4 h-4 bg-accent/40" />
         </div>
       </div>
     );
@@ -91,7 +96,7 @@ const WorkshopImage = ({
       )}
       
       <img
-        src={src}
+        src={optimizedSrc}
         alt={alt}
         className={`w-full h-full object-cover transition-opacity duration-300 ${
           isLoading ? "opacity-0" : "opacity-100"

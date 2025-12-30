@@ -1,7 +1,7 @@
 import { Phone, Mail, MapPin, ArrowRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import content from "@/data/content";
-import lmdaLogo from "@/assets/lmda-logo.png";
+import lmdaLogo from "@/assets/lmda-logo.webp";
 import { getWhatsAppLink } from "@/data/siteConfig";
 
 const Footer = () => {

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Users, Upload, LogOut, Shield, FileText } from 'lucide-react';
-import lmdaLogo from '@/assets/lmda-logo.png';
+import lmdaLogo from '@/assets/lmda-logo.webp';
 
 const AdminDashboard = () => {
   const { user, role, signOut, isSuperAdmin, isContentMaker } = useAuth();

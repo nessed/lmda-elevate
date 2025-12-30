@@ -1,8 +1,8 @@
-import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
-import heroImage from "@/assets/cover.png";
-import lmdaLogo from "@/assets/lmda-logo.png";
+import heroImage from "@/assets/cover.webp";
+import lmdaLogo from "@/assets/lmda-logo.webp";
 import { getWhatsAppLink } from "@/data/siteConfig";
 
 // Count-up animation component
@@ -91,6 +91,8 @@ const Hero = () => {
             src={heroImage}
             alt="Prof. Dr. Ali Sajid"
             className="w-full h-full object-cover object-[75%_center] sm:object-center lg:object-[center_20%] opacity-80 sm:opacity-70 lg:opacity-70 mix-blend-overlay lg:mix-blend-normal"
+            // @ts-ignore - fetchpriority is not yet in all TS React types
+            fetchpriority="high"
           />
           {/* Gradient Masks */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary/70 via-primary/40 to-transparent sm:from-primary sm:via-primary/80 lg:via-primary/80 lg:to-transparent" />
@@ -160,11 +162,11 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <motion.a
                 href="#programs"
-                className="shimmer-gold group inline-flex items-center justify-center gap-3 text-lg px-8 py-4 min-h-[48px] bg-gradient-to-r from-accent to-yellow-500 text-primary font-bold hover:shadow-2xl hover:shadow-accent/40 transition-all duration-300 active:scale-95 shadow-xl shadow-accent/20 rounded-full"
+                className="shimmer-gold group inline-flex items-center justify-center gap-3 text-lg px-8 py-4 min-h-[48px] bg-gradient-to-r from-accent to-yellow-500 text-primary font-bold hover:shadow-2xl hover:shadow-accent/40 transition-all duration-300 active:scale-95 shadow-xl shadow-accent/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Zap className="w-5 h-5 fill-current" />
+
                 View Workshops
                 <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
               </motion.a>
@@ -218,9 +220,9 @@ const Hero = () => {
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-1.5 sm:p-2">
+        <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/20 rounded-md flex items-start justify-center p-1.5 sm:p-2">
           <motion.div 
-            className="w-1 h-2 sm:w-1.5 sm:h-3 bg-accent rounded-full"
+            className="w-1 h-2 sm:w-1.5 sm:h-3 bg-accent"
             animate={{ height: ["20%", "50%", "20%"], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />

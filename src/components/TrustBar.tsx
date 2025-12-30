@@ -1,7 +1,7 @@
-import usaidLogo from "@/assets/lmda/1766913965236_logo-usaid.png";
-import haierLogo from "@/assets/lmda/1766913968918_haier.png";
-import ksbLogo from "@/assets/lmda/1766913993449_Ksblogo.png";
-import uolLogo from "@/assets/lmda/1766914004535_University_of_Lahore_(logo).png";
+import usaidLogo from "@/assets/lmda/1766913965236_logo-usaid.webp";
+import haierLogo from "@/assets/lmda/1766913968918_haier.webp";
+import ksbLogo from "@/assets/lmda/1766913993449_Ksblogo.webp";
+import uolLogo from "@/assets/lmda/1766914004535_University_of_Lahore_(logo).webp";
 
 const TrustBar = () => {
   const partners = [

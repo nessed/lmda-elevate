@@ -26,7 +26,7 @@ const Trainers = () => {
       name: "Prof. Dr. Ali Sajid",
       credentials: "T.I. (Tamgha-e-Imtiaz)",
       mastery: "Inspirational Leadership & Sales Growth",
-      image: "/src/assets/lmda/1766914035711_alisajid.jpg",
+      image: "/src/assets/lmda/1766914035711_alisajid.webp",
       bio: "Presidential Award Winner with 28+ years of transforming organizations across Pakistan and internationally.",
       highlight: "Presidential Award Winner",
     },
@@ -138,7 +138,7 @@ const Trainers = () => {
 
                   {/* Highlight Badge */}
                   {facilitator.highlight && (
-                    <div className="inline-block bg-accent/20 border border-accent/30 px-3 py-1 mb-5 rounded-full">
+                    <div className="inline-block bg-accent/20 border border-accent/30 px-3 py-1 mb-5">
                       <p className="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-wide">
                         {facilitator.highlight}
                       </p>

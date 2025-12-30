@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Plus, Trash2, Edit2, Eye, EyeOff } from 'lucide-react';
 import { format } from 'date-fns';
-import lmdaLogo from '@/assets/lmda-logo.png';
+import lmdaLogo from '@/assets/lmda-logo.webp';
 
 interface Workshop {
   id: string;

@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, Clock, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
-import zoomImage from "@/assets/zoomimagess.png";
+import zoomImage from "@/assets/zoom-logo.svg";
 import fallbackData from "@/data/fallbackWorkshops.json";
 import { siteConfig, getWorkshopRegistrationLink } from "@/data/siteConfig";
+import WorkshopImage from "./WorkshopImage";
 
 interface Workshop {
   id: string;
@@ -101,10 +102,10 @@ const ProductGrid = () => {
           onClick={() => setSelectedImage(null)}
         >
           <button 
-            className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-3 bg-white/10 rounded-full"
+            className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-2.5 bg-white/10 hover:bg-white/20 border border-white/10"
             onClick={() => setSelectedImage(null)}
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
           
           <div 
@@ -165,36 +166,24 @@ const ProductGrid = () => {
               return (
                 <motion.div
                   key={workshop.id}
-                  className="flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-shadow duration-300 flex flex-col border border-white/50"
+                  className="flex-shrink-0 w-[85vw] sm:w-auto snap-center sm:snap-start group bg-white overflow-hidden shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-shadow duration-300 flex flex-col border border-border"
                   variants={cardVariants}
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                 >
                   {/* Image Section */}
                   <div 
-                    className="relative w-full aspect-[4/5] overflow-hidden cursor-pointer bg-gradient-to-br from-slate-100 to-slate-200"
+                    className="relative w-full cursor-pointer"
                     onClick={() => hasFlyer && setSelectedImage(workshop.flyer_url)}
                   >
-                    {hasFlyer ? (
-                      <>
-                        <div 
-                          className="absolute inset-0 bg-cover bg-center blur-xl scale-110 opacity-50"
-                          style={{ backgroundImage: `url(${workshop.flyer_url})` }}
-                        />
-                        <img
-                          src={workshop.flyer_url!}
-                          alt={workshop.title}
-                          loading="lazy"
-                          className="relative w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-                          onError={() => handleImageError(workshop.id)}
-                        />
-                      </>
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/30 p-4">
-                        <span className="font-bold text-3xl sm:text-4xl uppercase tracking-widest">LMDA</span>
-                        <span className="text-sm mt-2">Poster Coming Soon</span>
-                      </div>
-                    )}
+                    <WorkshopImage
+                      src={workshop.flyer_url}
+                      alt={workshop.title}
+                      title={workshop.title}
+                      date={`${month} ${day}, ${time}`}
+                      price={workshop.price}
+                      aspectRatio="4/5"
+                    />
                   </div>
 
                   {/* Content Section */}
@@ -213,7 +202,7 @@ const ProductGrid = () => {
 
                     <div className="flex gap-3 sm:gap-4 mb-3 sm:mb-4">
                       {/* Date Box */}
-                      <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary via-primary to-slate-800 text-white rounded-2xl shadow-lg shadow-primary/20">
+                      <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-primary text-white shadow-lg shadow-primary/10">
                         <span className="text-[10px] sm:text-xs font-bold text-accent uppercase tracking-widest">{month}</span>
                         <span className="text-xl sm:text-2xl font-serif font-bold leading-none mt-0.5">{day}</span>
                       </div>
@@ -244,7 +233,7 @@ const ProductGrid = () => {
                         href={registrationLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="shimmer-gold flex items-center gap-2 bg-gradient-to-r from-primary to-slate-800 text-white px-6 py-3 rounded-xl hover:shadow-lg active:scale-95 transition-all duration-200 text-sm font-bold shadow-lg shadow-primary/20 flex-shrink-0"
+                        className="shimmer-gold flex items-center gap-2 bg-primary text-white px-6 py-3 hover:bg-primary/95 active:scale-95 transition-all duration-200 text-sm font-bold shadow-lg shadow-primary/10 flex-shrink-0"
                       >
                         <span className="hidden xs:inline">Register</span>
                         <ArrowRight className="w-4 h-4" />

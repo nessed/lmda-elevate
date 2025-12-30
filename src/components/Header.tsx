@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronRight } from "lucide-react";
 import content from "@/data/content";
-import lmdaLogo from "@/assets/lmda-logo.png";
+import lmdaLogo from "@/assets/lmda-logo.webp";
 
 interface HeaderProps {
   variant?: "default" | "solid";
@@ -124,7 +124,7 @@ const Header = ({ variant = "default" }: HeaderProps) => {
             </a>
             <Link
               to="/consultancy"
-              className="relative overflow-hidden px-5 xl:px-6 py-2.5 text-sm font-semibold text-white bg-lmda-blue hover:bg-lmda-blue/90 transition-all duration-300 shadow-md hover:shadow-lg rounded-full"
+              className="relative overflow-hidden px-5 xl:px-6 py-2.5 text-sm font-semibold text-white bg-lmda-blue hover:bg-lmda-blue/90 transition-all duration-300 shadow-md hover:shadow-lg"
             >
               <span className="relative z-10">Consultancy</span>
             </Link>

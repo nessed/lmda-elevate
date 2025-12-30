@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Upload, Info, Image as ImageIcon } from 'lucide-react';
 import { z } from 'zod';
-import lmdaLogo from '@/assets/lmda-logo.png';
+import lmdaLogo from '@/assets/lmda-logo.webp';
 
 const workshopSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200),

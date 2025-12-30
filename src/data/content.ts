@@ -1,25 +1,25 @@
 // Trainer Images
-import imgAliSajid from "@/assets/lmda/1766914035711_alisajid.jpg";
-import imgKashifFida from "@/assets/lmda/1766913955167_MUHAMMAD KASHIF FIDA.png";
-import imgBasharat from "@/assets/lmda/1766913957066_BASHARAT AHMAD.png";
-import imgTahir from "@/assets/lmda/1766913959066_ENGR TAHIR SHAMSHAD.png";
-import imgIhsan from "@/assets/lmda/1766913960545_IHSAN AHMAD .png";
-import imgKashifJalal from "@/assets/lmda/1766913962024_DR. KASHIF JALAL SYED.png";
-import imgImranRana from "@/assets/lmda/1766914038299_DR. IMRAN AHMAD RANA .png";
-import imgNaveen from "@/assets/lmda/1766914040215_NAVEEN BALKHI.png";
-import imgMutahir from "@/assets/lmda/1766914042248_DR. MUTAHIR HUSSAIN.png";
-import imgTurab from "@/assets/lmda/1766914051289_TURAB ALI KHAN.png";
+import imgAliSajid from "@/assets/lmda/1766914035711_alisajid.webp";
+import imgKashifFida from "@/assets/lmda/1766913955167_MUHAMMAD KASHIF FIDA.webp";
+import imgBasharat from "@/assets/lmda/1766913957066_BASHARAT AHMAD.webp";
+import imgTahir from "@/assets/lmda/1766913959066_ENGR TAHIR SHAMSHAD.webp";
+import imgIhsan from "@/assets/lmda/1766913960545_IHSAN AHMAD .webp";
+import imgKashifJalal from "@/assets/lmda/1766913962024_DR. KASHIF JALAL SYED.webp";
+import imgImranRana from "@/assets/lmda/1766914038299_DR. IMRAN AHMAD RANA .webp";
+import imgNaveen from "@/assets/lmda/1766914040215_NAVEEN BALKHI.webp";
+import imgMutahir from "@/assets/lmda/1766914042248_DR. MUTAHIR HUSSAIN.webp";
+import imgTurab from "@/assets/lmda/1766914051289_TURAB ALI KHAN.webp";
 
 // Partner Logos
-import logoUsaid from "@/assets/lmda/1766913965236_logo-usaid.png";
-import logoHaier from "@/assets/lmda/1766913968918_haier.png";
-import logoNust from "@/assets/lmda/1766913963539_NUST-logo.png";
-import logoKsb from "@/assets/lmda/1766913993449_Ksblogo.png";
-import logoUol from "@/assets/lmda/1766914004535_University_of_Lahore_(logo).png";
+import logoUsaid from "@/assets/lmda/1766913965236_logo-usaid.webp";
+import logoHaier from "@/assets/lmda/1766913968918_haier.webp";
+import logoNust from "@/assets/lmda/1766913963539_NUST-logo.webp";
+import logoKsb from "@/assets/lmda/1766913993449_Ksblogo.webp";
+import logoUol from "@/assets/lmda/1766914004535_University_of_Lahore_(logo).webp";
 
 // Achievements / Misc
-import imgLeadershipCamp from "@/assets/lmda/1766913795323_leadership camp.png";
-import imgDynamicPro from "@/assets/lmda/1766913791083_dynamic professional.png";
+import imgLeadershipCamp from "@/assets/lmda/1766913795323_leadership camp.webp";
+import imgDynamicPro from "@/assets/lmda/1766913791083_dynamic professional.webp";
 
 const content = {
   company: {
