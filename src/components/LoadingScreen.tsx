@@ -9,7 +9,7 @@ const LoadingScreen = () => {
     // Simulate minimum loading time for smooth UX, then check if page is ready
     const minLoadTime = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 400);
 
     return () => clearTimeout(minLoadTime);
   }, []);
